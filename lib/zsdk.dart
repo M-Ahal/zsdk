@@ -58,24 +58,24 @@ final class ZSDK {
   static const _orientation = 'orientation';
   static const _dpi = 'dpi';
 
-  final MethodChannel _channel;
+  final _channel = const MethodChannel(_kMethodChannelName);
 
-  ZSDK() : _channel = const MethodChannel(_kMethodChannelName) {
+  ZSDK() {
     _channel.setMethodCallHandler(_onMethodCall);
   }
 
-  Future<void> _onMethodCall(MethodCall call) async {
+  static Future<void> _onMethodCall(MethodCall call) async {
     try {
       switch (call.method) {
         default:
           print(call.arguments);
       }
-    } catch (e) {
-      print(e);
+    } on Exception catch (ex) {
+      print(ex);
     }
   }
 
-  FutureOr<T> _onTimeout<T>({Duration? timeout}) => throw PlatformException(
+  static FutureOr<T> _onTimeout<T>({Duration? timeout}) => throw PlatformException(
     code: ErrorCode.exception.name,
     message:
         "Connection timeout${timeout != null ? " after ${timeout.inSeconds} seconds of waiting" : "."}",
@@ -159,7 +159,7 @@ final class ZSDK {
     PrinterConf? printerConf,
     Duration? timeout,
   }) => _printFileOverTCPIP(
-    method: _kPrintPdfFileOverTcpIp,
+    methodName: _kPrintPdfFileOverTcpIp,
     filePath: filePath,
     address: address,
     port: port,
@@ -174,7 +174,7 @@ final class ZSDK {
     PrinterConf? printerConf,
     Duration? timeout,
   }) => _printFileOverTCPIP(
-    method: _kPrintZplFileOverTcpIp,
+    methodName: _kPrintZplFileOverTcpIp,
     filePath: filePath,
     address: address,
     port: port,
@@ -183,14 +183,14 @@ final class ZSDK {
   );
 
   Future _printFileOverTCPIP({
-    required method,
+    required String methodName,
     required String filePath,
     required String address,
     int? port,
     PrinterConf? printerConf,
     Duration? timeout,
   }) => _channel
-      .invokeMethod(method, {
+      .invokeMethod(methodName, {
         _filePath: filePath,
         _address: address,
         _port: port,
@@ -211,7 +211,7 @@ final class ZSDK {
     PrinterConf? printerConf,
     Duration? timeout,
   }) => _printDataOverTCPIP(
-    method: _kPrintPdfDataOverTcpIp,
+    methodName: _kPrintPdfDataOverTcpIp,
     data: data,
     address: address,
     port: port,
@@ -226,7 +226,7 @@ final class ZSDK {
     PrinterConf? printerConf,
     Duration? timeout,
   }) => _printDataOverTCPIP(
-    method: _kPrintZplDataOverTcpIp,
+    methodName: _kPrintZplDataOverTcpIp,
     data: data,
     address: address,
     port: port,
@@ -235,14 +235,14 @@ final class ZSDK {
   );
 
   Future _printDataOverTCPIP({
-    required method,
+    required String methodName,
     required data,
     required String address,
     int? port,
     PrinterConf? printerConf,
     Duration? timeout,
   }) => _channel
-      .invokeMethod(method, {
+      .invokeMethod(methodName, {
         _data: data,
         _address: address,
         _port: port,
