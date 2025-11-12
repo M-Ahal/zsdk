@@ -7,8 +7,8 @@ class StatusInfo {
   final Cause cause;
 
   StatusInfo(Status? status, Cause? cause)
-      : status = status ?? Status.UNKNOWN,
-        cause = cause ?? Cause.UNKNOWN;
+      : status = status ?? Status.unknown,
+        cause = cause ?? Cause.unknown;
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'status': status.name,

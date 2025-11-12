@@ -1,17 +1,17 @@
 /// Created by luis901101 on 2020-02-11.
 enum PrintMethod {
-  THERMAL_TRANS,
-  DIRECT_THERMAL,
+  thermalTrans,
+  directThermal,
 }
 
 final _mapValueOfName = {
-  'thermal trans': PrintMethod.THERMAL_TRANS,
-  'direct thermal': PrintMethod.DIRECT_THERMAL,
+  'thermal trans': PrintMethod.thermalTrans,
+  'direct thermal': PrintMethod.directThermal,
 };
 
 final _mapNameOfValue = {
-  PrintMethod.THERMAL_TRANS: 'thermal trans',
-  PrintMethod.DIRECT_THERMAL: 'direct thermal',
+  PrintMethod.thermalTrans: 'thermal trans',
+  PrintMethod.directThermal: 'direct thermal',
 };
 
 extension PrintMethodUtils on PrintMethod {

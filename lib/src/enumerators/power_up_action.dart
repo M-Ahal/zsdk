@@ -1,26 +1,26 @@
 /// Created by luis901101 on 2020-02-11.
 enum PowerUpAction {
-  FEED,
-  CALIBRATE,
-  LENGTH,
-  NO_MOTION,
-  SHORT_CAL,
+  feed,
+  calibrate,
+  length,
+  noMotion,
+  shortCal,
 }
 
 final _mapValueOfName = {
-  'feed': PowerUpAction.FEED,
-  'calibrate': PowerUpAction.CALIBRATE,
-  'length': PowerUpAction.LENGTH,
-  'no motion': PowerUpAction.NO_MOTION,
-  'short cal': PowerUpAction.SHORT_CAL,
+  'feed': PowerUpAction.feed,
+  'calibrate': PowerUpAction.calibrate,
+  'length': PowerUpAction.length,
+  'no motion': PowerUpAction.noMotion,
+  'short cal': PowerUpAction.shortCal,
 };
 
 final _mapNameOfValue = {
-  PowerUpAction.FEED: 'feed',
-  PowerUpAction.CALIBRATE: 'calibrate',
-  PowerUpAction.LENGTH: 'length',
-  PowerUpAction.NO_MOTION: 'no motion',
-  PowerUpAction.SHORT_CAL: 'short cal',
+  PowerUpAction.feed: 'feed',
+  PowerUpAction.calibrate: 'calibrate',
+  PowerUpAction.length: 'length',
+  PowerUpAction.noMotion: 'no motion',
+  PowerUpAction.shortCal: 'short cal',
 };
 
 extension PowerUpActionUtils on PowerUpAction {

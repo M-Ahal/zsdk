@@ -1,8 +1,8 @@
 /// Created by luis901101 on 2020-01-07.
 enum Status {
-  PAUSED,
-  READY_TO_PRINT,
-  UNKNOWN,
+  paused,
+  readyToPrint,
+  unknown,
 }
 
 extension StatusUtils on Status {
@@ -12,6 +12,6 @@ extension StatusUtils on Status {
     for (Status value in Status.values) {
       if (value.name == name) return value;
     }
-    return Status.UNKNOWN;
+    return Status.unknown;
   }
 }

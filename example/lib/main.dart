@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:zsdk/zsdk.dart' as Printer;
-import 'dart:io';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,8 +44,8 @@ class _MyAppState extends State<MyApp> {
   final addressIpController = TextEditingController(text: "10.0.0.11");
   final addressPortController = TextEditingController();
   final pathController = TextEditingController();
-  final zplDataController = TextEditingController(
-      text: '^XA^FO17,16^GB379,371,8^FS^FT65,255^A0N,135,134^FDTEST^FS^XZ');
+  final zplDataController =
+      TextEditingController(text: '^XA^FO17,16^GB379,371,8^FS^FT65,255^A0N,135,134^FDTEST^FS^XZ');
   final widthController = TextEditingController();
   final heightController = TextEditingController();
   final dpiController = TextEditingController();
@@ -68,7 +69,7 @@ class _MyAppState extends State<MyApp> {
 
   Printer.PrinterSettings? settings;
 
-  Printer.Orientation printerOrientation = Printer.Orientation.LANDSCAPE;
+  Printer.Orientation printerOrientation = Printer.Orientation.landscape;
   String? message;
   String? statusMessage;
   String? settingsMessage;
@@ -144,8 +145,7 @@ class _MyAppState extends State<MyApp> {
                       ),
                       TextField(
                         controller: pathController,
-                        decoration:
-                            const InputDecoration(labelText: "File path"),
+                        decoration: const InputDecoration(labelText: "File path"),
                       ),
                       const Divider(
                         color: Colors.transparent,
@@ -160,9 +160,8 @@ class _MyAppState extends State<MyApp> {
                               ),
                               onPressed: () async {
                                 try {
-                                  FilePickerResult? result = await FilePicker
-                                      .platform
-                                      .pickFiles(type: FileType.any);
+                                  FilePickerResult? result =
+                                      await FilePicker.platform.pickFiles(type: FileType.any);
                                   if (result != null) {
                                     filePath = result.files.single.path;
                                     if (filePath != null) {
@@ -192,9 +191,8 @@ class _MyAppState extends State<MyApp> {
                               ),
                               onPressed: () async {
                                 try {
-                                  FilePickerResult? result = await FilePicker
-                                      .platform
-                                      .pickFiles(type: FileType.any);
+                                  FilePickerResult? result =
+                                      await FilePicker.platform.pickFiles(type: FileType.any);
                                   if (result != null) {
                                     filePath = result.files.single.path;
                                     if (filePath != null) {
@@ -235,8 +233,7 @@ class _MyAppState extends State<MyApp> {
                       ),
                       TextField(
                         controller: zplDataController,
-                        decoration:
-                            const InputDecoration(labelText: "ZPL data"),
+                        decoration: const InputDecoration(labelText: "ZPL data"),
                         maxLines: 5,
                       ),
                     ],
@@ -256,13 +253,12 @@ class _MyAppState extends State<MyApp> {
                       ),
                       TextField(
                         controller: addressIpController,
-                        decoration: const InputDecoration(
-                            labelText: "Printer IP address"),
+                        decoration: const InputDecoration(labelText: "Printer IP address"),
                       ),
                       TextField(
                         controller: addressPortController,
-                        decoration: const InputDecoration(
-                            labelText: "Printer port (defaults to 9100)"),
+                        decoration:
+                            const InputDecoration(labelText: "Printer port (defaults to 9100)"),
                       ),
                       const SizedBox(
                         height: 16,
@@ -297,10 +293,9 @@ class _MyAppState extends State<MyApp> {
                                 backgroundColor: Colors.orange,
                                 foregroundColor: Colors.white,
                               ),
-                              onPressed:
-                                  checkingStatus == OperationStatus.RECEIVING
-                                      ? null
-                                      : () => onClick(btnCheckPrinterStatus),
+                              onPressed: checkingStatus == OperationStatus.RECEIVING
+                                  ? null
+                                  : () => onClick(btnCheckPrinterStatus),
                               child: Text(
                                 "Check printer status".toUpperCase(),
                                 textAlign: TextAlign.center,
@@ -314,10 +309,9 @@ class _MyAppState extends State<MyApp> {
                                 backgroundColor: Colors.red,
                                 foregroundColor: Colors.white,
                               ),
-                              onPressed:
-                                  checkingStatus == OperationStatus.SENDING
-                                      ? null
-                                      : () => onClick(btnRebootPrinter),
+                              onPressed: checkingStatus == OperationStatus.SENDING
+                                  ? null
+                                  : () => onClick(btnRebootPrinter),
                               child: Text(
                                 "Reboot Printer".toUpperCase(),
                                 textAlign: TextAlign.center,
@@ -350,19 +344,12 @@ class _MyAppState extends State<MyApp> {
                       ),
                       RichText(
                         text: TextSpan(
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.color),
+                            style: TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
                             children: [
                               const TextSpan(
                                   text: "Brand and model: ",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(
-                                  text:
-                                      settings?.printerModelName ?? "Unknown"),
+                                  style: TextStyle(fontWeight: FontWeight.bold)),
+                              TextSpan(text: settings?.printerModelName ?? "Unknown"),
                             ]),
                       ),
                       const Divider(
@@ -371,19 +358,12 @@ class _MyAppState extends State<MyApp> {
                       ),
                       RichText(
                         text: TextSpan(
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.color),
+                            style: TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
                             children: [
                               const TextSpan(
                                   text: "Device friendly name: ",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(
-                                  text: settings?.deviceFriendlyName ??
-                                      "Unknown"),
+                                  style: TextStyle(fontWeight: FontWeight.bold)),
+                              TextSpan(text: settings?.deviceFriendlyName ?? "Unknown"),
                             ]),
                       ),
                       const Divider(
@@ -392,16 +372,11 @@ class _MyAppState extends State<MyApp> {
                       ),
                       RichText(
                         text: TextSpan(
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.color),
+                            style: TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
                             children: [
                               const TextSpan(
                                   text: "Firmware: ",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
+                                  style: TextStyle(fontWeight: FontWeight.bold)),
                               TextSpan(text: settings?.firmware ?? "Unknown"),
                             ]),
                       ),
@@ -411,18 +386,12 @@ class _MyAppState extends State<MyApp> {
                       ),
                       RichText(
                         text: TextSpan(
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.color),
+                            style: TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
                             children: [
                               const TextSpan(
                                   text: "Link-OS Version: ",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(
-                                  text: settings?.linkOSVersion ?? "Unknown"),
+                                  style: TextStyle(fontWeight: FontWeight.bold)),
+                              TextSpan(text: settings?.linkOSVersion ?? "Unknown"),
                             ]),
                       ),
                       const Divider(
@@ -431,171 +400,130 @@ class _MyAppState extends State<MyApp> {
                       ),
                       RichText(
                         text: TextSpan(
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.color),
+                            style: TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
                             children: [
                               const TextSpan(
                                   text: "Printer DPI: ",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
+                                  style: TextStyle(fontWeight: FontWeight.bold)),
                               TextSpan(text: settings?.printerDpi ?? "Unknown"),
                             ]),
                       ),
                       RichText(
                         text: TextSpan(
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.color),
+                            style: TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
                             children: [
                               const TextSpan(
-                                  text:
-                                      "Resolution in dots per millimeter (dpmm): ",
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
+                                  text: "Resolution in dots per millimeter (dpmm): ",
+                                  style: TextStyle(fontWeight: FontWeight.bold)),
                               TextSpan(
-                                  text: settings?.devicePrintHeadResolution !=
-                                          null
+                                  text: settings?.devicePrintHeadResolution != null
                                       ? "${double.tryParse(settings?.devicePrintHeadResolution ?? '')?.truncate()}dpmm"
                                       : "Unknown"),
                             ]),
                       ),
                       TextField(
                         controller: darknessController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            signed: true, decimal: true),
+                        keyboardType:
+                            const TextInputType.numberWithOptions(signed: true, decimal: true),
                         textInputAction: TextInputAction.done,
-                        decoration:
-                            const InputDecoration(labelText: "Darkness"),
+                        decoration: const InputDecoration(labelText: "Darkness"),
                       ),
                       TextField(
                         controller: printSpeedController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            signed: false, decimal: false),
+                        keyboardType:
+                            const TextInputType.numberWithOptions(signed: false, decimal: false),
                         textInputAction: TextInputAction.done,
-                        decoration:
-                            const InputDecoration(labelText: "Print speed"),
+                        decoration: const InputDecoration(labelText: "Print speed"),
                       ),
                       TextField(
                         controller: tearOffController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            signed: true, decimal: false),
+                        keyboardType:
+                            const TextInputType.numberWithOptions(signed: true, decimal: false),
                         textInputAction: TextInputAction.done,
-                        decoration:
-                            const InputDecoration(labelText: "Tear off"),
+                        decoration: const InputDecoration(labelText: "Tear off"),
                       ),
                       DropdownButtonFormField<Printer.MediaType>(
                         items: generateDropdownItems(Printer.MediaType.values),
                         value: selectedMediaType,
-                        onChanged: (value) =>
-                            setState(() => selectedMediaType = value),
-                        decoration:
-                            const InputDecoration(labelText: "Media type"),
+                        onChanged: (value) => setState(() => selectedMediaType = value),
+                        decoration: const InputDecoration(labelText: "Media type"),
                       ),
                       DropdownButtonFormField<Printer.PrintMethod>(
-                        items:
-                            generateDropdownItems(Printer.PrintMethod.values),
+                        items: generateDropdownItems(Printer.PrintMethod.values),
                         value: selectedPrintMethod,
-                        onChanged: (value) =>
-                            setState(() => selectedPrintMethod = value),
-                        decoration:
-                            const InputDecoration(labelText: "Print method"),
+                        onChanged: (value) => setState(() => selectedPrintMethod = value),
+                        decoration: const InputDecoration(labelText: "Print method"),
                       ),
                       TextField(
                         controller: printWidthController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            signed: false, decimal: false),
+                        keyboardType:
+                            const TextInputType.numberWithOptions(signed: false, decimal: false),
                         textInputAction: TextInputAction.done,
-                        decoration:
-                            const InputDecoration(labelText: "Print width"),
+                        decoration: const InputDecoration(labelText: "Print width"),
                       ),
                       TextField(
                         controller: labelLengthController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            signed: false, decimal: false),
+                        keyboardType:
+                            const TextInputType.numberWithOptions(signed: false, decimal: false),
                         textInputAction: TextInputAction.done,
-                        decoration:
-                            const InputDecoration(labelText: "Label length"),
+                        decoration: const InputDecoration(labelText: "Label length"),
                       ),
                       TextField(
                         controller: labelLengthMaxController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            signed: false, decimal: true),
+                        keyboardType:
+                            const TextInputType.numberWithOptions(signed: false, decimal: true),
                         textInputAction: TextInputAction.done,
-                        decoration: const InputDecoration(
-                            labelText: "Label length max"),
+                        decoration: const InputDecoration(labelText: "Label length max"),
                       ),
                       DropdownButtonFormField<Printer.ZPLMode>(
                         items: generateDropdownItems(Printer.ZPLMode.values),
                         value: selectedZPLMode,
-                        onChanged: (value) =>
-                            setState(() => selectedZPLMode = value),
-                        decoration:
-                            const InputDecoration(labelText: "ZPL mode"),
+                        onChanged: (value) => setState(() => selectedZPLMode = value),
+                        decoration: const InputDecoration(labelText: "ZPL mode"),
                       ),
                       DropdownButtonFormField<Printer.PowerUpAction>(
-                        items:
-                            generateDropdownItems(Printer.PowerUpAction.values),
+                        items: generateDropdownItems(Printer.PowerUpAction.values),
                         value: selectedPowerUpAction,
-                        onChanged: (value) =>
-                            setState(() => selectedPowerUpAction = value),
-                        decoration:
-                            const InputDecoration(labelText: "Power up action"),
+                        onChanged: (value) => setState(() => selectedPowerUpAction = value),
+                        decoration: const InputDecoration(labelText: "Power up action"),
                       ),
                       DropdownButtonFormField<Printer.HeadCloseAction>(
-                        items: generateDropdownItems(
-                            Printer.HeadCloseAction.values),
+                        items: generateDropdownItems(Printer.HeadCloseAction.values),
                         value: selectedHeadCloseAction,
-                        onChanged: (value) =>
-                            setState(() => selectedHeadCloseAction = value),
-                        decoration: const InputDecoration(
-                            labelText: "Head close action"),
+                        onChanged: (value) => setState(() => selectedHeadCloseAction = value),
+                        decoration: const InputDecoration(labelText: "Head close action"),
                       ),
                       TextField(
                         controller: labelTopController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            signed: true, decimal: false),
+                        keyboardType:
+                            const TextInputType.numberWithOptions(signed: true, decimal: false),
                         textInputAction: TextInputAction.done,
-                        decoration:
-                            const InputDecoration(labelText: "Label top"),
+                        decoration: const InputDecoration(labelText: "Label top"),
                       ),
                       TextField(
                         controller: leftPositionController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            signed: true, decimal: false),
+                        keyboardType:
+                            const TextInputType.numberWithOptions(signed: true, decimal: false),
                         textInputAction: TextInputAction.done,
-                        decoration:
-                            const InputDecoration(labelText: "Left position"),
+                        decoration: const InputDecoration(labelText: "Left position"),
                       ),
                       DropdownButtonFormField<Printer.PrintMode>(
                         items: generateDropdownItems(Printer.PrintMode.values),
                         value: selectedPrintMode,
-                        onChanged: (value) =>
-                            setState(() => selectedPrintMode = value),
-                        decoration:
-                            const InputDecoration(labelText: "Print mode"),
+                        onChanged: (value) => setState(() => selectedPrintMode = value),
+                        decoration: const InputDecoration(labelText: "Print mode"),
                       ),
                       DropdownButtonFormField<Printer.ReprintMode>(
-                        items:
-                            generateDropdownItems(Printer.ReprintMode.values),
+                        items: generateDropdownItems(Printer.ReprintMode.values),
                         value: selectedReprintMode,
-                        onChanged: (value) =>
-                            setState(() => selectedReprintMode = value),
-                        decoration:
-                            const InputDecoration(labelText: "Reprint mode"),
+                        onChanged: (value) => setState(() => selectedReprintMode = value),
+                        decoration: const InputDecoration(labelText: "Reprint mode"),
                       ),
                       DropdownButtonFormField<Printer.VirtualDevice>(
-                        items:
-                            generateDropdownItems(Printer.VirtualDevice.values),
+                        items: generateDropdownItems(Printer.VirtualDevice.values),
                         value: selectedVirtualDevice,
-                        onChanged: (value) =>
-                            setState(() => selectedVirtualDevice = value),
-                        decoration:
-                            const InputDecoration(labelText: "Virtual device"),
+                        onChanged: (value) => setState(() => selectedVirtualDevice = value),
+                        decoration: const InputDecoration(labelText: "Virtual device"),
                       ),
                       const SizedBox(
                         height: 16,
@@ -610,8 +538,7 @@ class _MyAppState extends State<MyApp> {
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  color:
-                                      getOperationStatusColor(settingsStatus)),
+                                  color: getOperationStatusColor(settingsStatus)),
                             ),
                             const SizedBox(
                               height: 16,
@@ -627,12 +554,10 @@ class _MyAppState extends State<MyApp> {
                                 backgroundColor: Colors.deepPurple,
                                 foregroundColor: Colors.white,
                               ),
-                              onPressed:
-                                  settingsStatus == OperationStatus.SENDING ||
-                                          settingsStatus ==
-                                              OperationStatus.RECEIVING
-                                      ? null
-                                      : () => onClick(btnSetPrinterSettings),
+                              onPressed: settingsStatus == OperationStatus.SENDING ||
+                                      settingsStatus == OperationStatus.RECEIVING
+                                  ? null
+                                  : () => onClick(btnSetPrinterSettings),
                               child: Text(
                                 "Set settings".toUpperCase(),
                                 textAlign: TextAlign.center,
@@ -648,12 +573,10 @@ class _MyAppState extends State<MyApp> {
                                 backgroundColor: Colors.purple,
                                 foregroundColor: Colors.white,
                               ),
-                              onPressed:
-                                  settingsStatus == OperationStatus.SENDING ||
-                                          settingsStatus ==
-                                              OperationStatus.RECEIVING
-                                      ? null
-                                      : () => onClick(btnGetPrinterSettings),
+                              onPressed: settingsStatus == OperationStatus.SENDING ||
+                                      settingsStatus == OperationStatus.RECEIVING
+                                  ? null
+                                  : () => onClick(btnGetPrinterSettings),
                               child: Text(
                                 "Get settings".toUpperCase(),
                                 textAlign: TextAlign.center,
@@ -670,12 +593,10 @@ class _MyAppState extends State<MyApp> {
                                 backgroundColor: Colors.pink,
                                 foregroundColor: Colors.white,
                               ),
-                              onPressed:
-                                  settingsStatus == OperationStatus.SENDING ||
-                                          settingsStatus ==
-                                              OperationStatus.RECEIVING
-                                      ? null
-                                      : () => onClick(btnResetPrinterSettings),
+                              onPressed: settingsStatus == OperationStatus.SENDING ||
+                                      settingsStatus == OperationStatus.RECEIVING
+                                  ? null
+                                  : () => onClick(btnResetPrinterSettings),
                               child: Text(
                                 "Reset settings".toUpperCase(),
                                 textAlign: TextAlign.center,
@@ -712,8 +633,7 @@ class _MyAppState extends State<MyApp> {
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  color: getOperationStatusColor(
-                                      calibrationStatus)),
+                                  color: getOperationStatusColor(calibrationStatus)),
                             ),
                             const SizedBox(
                               height: 16,
@@ -729,10 +649,9 @@ class _MyAppState extends State<MyApp> {
                                 backgroundColor: Colors.blueGrey,
                                 foregroundColor: Colors.white,
                               ),
-                              onPressed:
-                                  calibrationStatus == OperationStatus.SENDING
-                                      ? null
-                                      : () => onClick(btnDoManualCalibration),
+                              onPressed: calibrationStatus == OperationStatus.SENDING
+                                  ? null
+                                  : () => onClick(btnDoManualCalibration),
                               child: Text(
                                 "DO MANUAL CALIBRATION".toUpperCase(),
                                 textAlign: TextAlign.center,
@@ -758,45 +677,37 @@ class _MyAppState extends State<MyApp> {
                       ),
                       TextField(
                         controller: widthController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         decoration: const InputDecoration(
-                            labelText:
-                                "Paper width in cm (defaults to 15.20 cm)"),
+                            labelText: "Paper width in cm (defaults to 15.20 cm)"),
                       ),
                       TextField(
                         controller: heightController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         decoration: const InputDecoration(
-                            labelText:
-                                "Paper height in cm (defaults to 7.00 cm)"),
+                            labelText: "Paper height in cm (defaults to 7.00 cm)"),
                       ),
                       TextField(
                         controller: dpiController,
-                        keyboardType: const TextInputType.numberWithOptions(
-                            decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         decoration: const InputDecoration(
-                            labelText:
-                                "Printer density per inch (defaults to 203 dpi)"),
+                            labelText: "Printer density per inch (defaults to 203 dpi)"),
                       ),
                       DropdownButtonFormField<Printer.Orientation>(
                         items: const [
                           DropdownMenuItem(
-                            value: Printer.Orientation.PORTRAIT,
+                            value: Printer.Orientation.portrait,
                             child: Text("Portrait"),
                           ),
                           DropdownMenuItem(
-                            value: Printer.Orientation.LANDSCAPE,
+                            value: Printer.Orientation.landscape,
                             child: Text("Landscape"),
                           )
                         ],
                         value: printerOrientation,
-                        onChanged: (value) => setState(() =>
-                            printerOrientation =
-                                value ?? Printer.Orientation.LANDSCAPE),
-                        decoration: const InputDecoration(
-                            labelText: "Print orientation"),
+                        onChanged: (value) => setState(
+                            () => printerOrientation = value ?? Printer.Orientation.landscape),
+                        decoration: const InputDecoration(labelText: "Print orientation"),
                       ),
                     ],
                   ),
@@ -1030,8 +941,7 @@ class _MyAppState extends State<MyApp> {
                     printMethod: selectedPrintMethod,
                     printWidth: int.tryParse(printWidthController.text),
                     labelLength: int.tryParse(labelLengthController.text),
-                    labelLengthMax:
-                        double.tryParse(labelLengthMaxController.text),
+                    labelLengthMax: double.tryParse(labelLengthMaxController.text),
                     zplMode: selectedZPLMode,
                     powerUpAction: selectedPowerUpAction,
                     headCloseAction: selectedHeadCloseAction,
@@ -1165,8 +1075,7 @@ class _MyAppState extends State<MyApp> {
               if (value != null) {
                 printerResponse = Printer.PrinterResponse.fromMap(value);
               }
-              statusMessage =
-                  "${printerResponse != null ? printerResponse.toMap() : value}";
+              statusMessage = "${printerResponse != null ? printerResponse.toMap() : value}";
             });
           }, onError: (error, stacktrace) {
             try {
@@ -1208,8 +1117,7 @@ class _MyAppState extends State<MyApp> {
               if (value != null) {
                 printerResponse = Printer.PrinterResponse.fromMap(value);
               }
-              statusMessage =
-                  "${printerResponse != null ? printerResponse.toMap() : value}";
+              statusMessage = "${printerResponse != null ? printerResponse.toMap() : value}";
             });
           }, onError: (error, stacktrace) {
             try {
@@ -1274,8 +1182,7 @@ class _MyAppState extends State<MyApp> {
           break;
         case btnPrintPdfFileOverTCPIP:
           if (!pathController.text.endsWith(".pdf")) {
-            throw Exception(
-                "Make sure you properly write the path or selected a proper pdf file");
+            throw Exception("Make sure you properly write the path or selected a proper pdf file");
           }
           setState(() {
             message = "Print job started...";
@@ -1322,16 +1229,14 @@ class _MyAppState extends State<MyApp> {
           break;
         case btnPrintZplFileOverTCPIP:
           if (filePath == null && !pathController.text.endsWith(".zpl")) {
-            throw Exception(
-                "Make sure you properly write the path or selected a proper zpl file");
+            throw Exception("Make sure you properly write the path or selected a proper zpl file");
           }
           File zplFile = File(filePath!);
           if (await zplFile.exists()) {
             zplData = await zplFile.readAsString();
           }
           if (zplData == null || zplData!.isEmpty) {
-            throw Exception(
-                "Make sure you properly write the path or selected a proper zpl file");
+            throw Exception("Make sure you properly write the path or selected a proper zpl file");
           }
           setState(() {
             message = "Print job started...";
@@ -1432,7 +1337,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   void showSnackBar(String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 }

@@ -1,7 +1,7 @@
 /// Created by luis901101 on 2020-01-07.
 enum Orientation {
-  PORTRAIT,
-  LANDSCAPE,
+  portrait,
+  landscape,
 }
 
 extension OrientationUtils on Orientation {
@@ -11,6 +11,6 @@ extension OrientationUtils on Orientation {
     for (Orientation value in Orientation.values) {
       if (value.name == name) return value;
     }
-    return Orientation.LANDSCAPE;
+    return Orientation.landscape;
   }
 }

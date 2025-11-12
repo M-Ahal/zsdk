@@ -1,17 +1,17 @@
 /// Created by luis901101 on 2020-02-11.
 enum ZPLMode {
-  ZPL,
-  ZPL_II,
+  zpl,
+  zplIi,
 }
 
 final _mapValueOfName = {
-  'zpl': ZPLMode.ZPL,
-  'zpl II': ZPLMode.ZPL_II,
+  'zpl': ZPLMode.zpl,
+  'zpl II': ZPLMode.zplIi,
 };
 
 final _mapNameOfValue = {
-  ZPLMode.ZPL: 'zpl',
-  ZPLMode.ZPL_II: 'zpl II',
+  ZPLMode.zpl: 'zpl',
+  ZPLMode.zplIi: 'zpl II',
 };
 
 extension ZPLModeUtils on ZPLMode {
