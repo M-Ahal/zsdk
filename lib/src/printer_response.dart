@@ -1,7 +1,7 @@
 import 'package:zsdk/src/enumerators/cause.dart';
 import 'package:zsdk/src/enumerators/error_code.dart';
-import 'package:zsdk/src/printer_settings.dart';
 import 'package:zsdk/src/enumerators/status.dart';
+import 'package:zsdk/src/printer_settings.dart';
 import 'package:zsdk/src/status_info.dart';
 
 /// Created by luis901101 on 2020-01-07.
@@ -11,13 +11,9 @@ class PrinterResponse {
   PrinterSettings? settings;
   String? message;
 
-  PrinterResponse(
-      {ErrorCode? errorCode,
-      StatusInfo? statusInfo,
-      this.settings,
-      this.message})
-      : errorCode = errorCode ?? ErrorCode.UNKNOWN,
-        statusInfo = statusInfo ?? StatusInfo(Status.UNKNOWN, Cause.UNKNOWN);
+  PrinterResponse({ErrorCode? errorCode, StatusInfo? statusInfo, this.settings, this.message})
+      : errorCode = errorCode ?? ErrorCode.unknown,
+        statusInfo = statusInfo ?? StatusInfo(Status.unknown, Cause.unknown);
 
   Map<String, dynamic> toMap() => <String, dynamic>{
         'errorCode': errorCode.name,
@@ -28,12 +24,8 @@ class PrinterResponse {
 
   factory PrinterResponse.fromMap(Map<dynamic, dynamic> map) => PrinterResponse(
         errorCode: ErrorCodeUtils.valueOf(map['errorCode']),
-        statusInfo: map['statusInfo'] == null
-            ? null
-            : StatusInfo.fromMap(map['statusInfo']),
-        settings: map['settings'] == null
-            ? null
-            : PrinterSettings.fromMap(map['settings']),
+        statusInfo: map['statusInfo'] == null ? null : StatusInfo.fromMap(map['statusInfo']),
+        settings: map['settings'] == null ? null : PrinterSettings.fromMap(map['settings']),
         message: map['message'],
       );
 }

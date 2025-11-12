@@ -1,17 +1,17 @@
 /// Created by luis901101 on 2020-02-11.
 enum ReprintMode {
-  ON,
-  OFF,
+  on,
+  off,
 }
 
 final _mapValueOfName = {
-  'on': ReprintMode.ON,
-  'off': ReprintMode.OFF,
+  'on': ReprintMode.on,
+  'off': ReprintMode.off,
 };
 
 final _mapNameOfValue = {
-  ReprintMode.ON: 'on',
-  ReprintMode.OFF: 'off',
+  ReprintMode.on: 'on',
+  ReprintMode.off: 'off',
 };
 
 extension ReprintModeUtils on ReprintMode {

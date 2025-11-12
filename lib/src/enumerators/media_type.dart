@@ -1,20 +1,20 @@
 /// Created by luis901101 on 2020-02-11.
 enum MediaType {
-  CONTINUOUS,
-  GAP_NOTCH,
-  MARK,
+  continuous,
+  gapNotch,
+  mark,
 }
 
 final _mapValueOfName = {
-  'continuous': MediaType.CONTINUOUS,
-  'gap/notch': MediaType.GAP_NOTCH,
-  'mark': MediaType.MARK,
+  'continuous': MediaType.continuous,
+  'gap/notch': MediaType.gapNotch,
+  'mark': MediaType.mark,
 };
 
 final _mapNameOfValue = {
-  MediaType.CONTINUOUS: 'continuous',
-  MediaType.GAP_NOTCH: 'gap/notch',
-  MediaType.MARK: 'mark',
+  MediaType.continuous: 'continuous',
+  MediaType.gapNotch: 'gap/notch',
+  MediaType.mark: 'mark',
 };
 
 extension MediaTypeUtils on MediaType {

@@ -1,10 +1,10 @@
 /// Created by luis901101 on 2020-01-09.
 enum ErrorCode {
-  SUCCESS,
-  EXCEPTION,
-  PRINTER_ERROR,
-  PRINTER_REBOOTED,
-  UNKNOWN,
+  success,
+  exception,
+  printerError,
+  printerRebooted,
+  unknown,
 }
 
 extension ErrorCodeUtils on ErrorCode {
@@ -14,6 +14,6 @@ extension ErrorCodeUtils on ErrorCode {
     for (ErrorCode value in ErrorCode.values) {
       if (value.name == name) return value;
     }
-    return ErrorCode.UNKNOWN;
+    return ErrorCode.unknown;
   }
 }

@@ -11,29 +11,28 @@ import 'enumerators/virtual_device.dart';
 /// Created by luis901101 on 2020-02-10.
 class PrinterSettings {
   /// Fields name
-  static const String FIELD_DARKNESS = "darkness";
-  static const String FIELD_PRINT_SPEED = "printSpeed";
-  static const String FIELD_TEAR_OFF = "tearOff";
-  static const String FIELD_MEDIA_TYPE = "mediaType";
-  static const String FIELD_PRINT_METHOD = "printMethod";
-  static const String FIELD_PRINT_WIDTH = "printWidth";
-  static const String FIELD_LABEL_LENGTH = "labelLength";
-  static const String FIELD_LABEL_LENGTH_MAX = "labelLengthMax";
-  static const String FIELD_ZPL_MODE = "zplMode";
-  static const String FIELD_POWER_UP_ACTION = "powerUpAction";
-  static const String FIELD_HEAD_CLOSE_ACTION = "headCloseAction";
-  static const String FIELD_LABEL_TOP = "labelTop";
-  static const String FIELD_LEFT_POSITION = "leftPosition";
-  static const String FIELD_PRINT_MODE = "printMode";
-  static const String FIELD_REPRINT_MODE = "reprintMode";
-  static const String FIELD_VIRTUAL_DEVICE = "virtualDevice";
-  static const String FIELD_PRINTER_MODEL_NAME = "printerModelName";
-  static const String FIELD_DEVICE_FRIENDLY_NAME = "deviceFriendlyName";
-  static const String FIELD_FIRMWARE = "firmware";
-  static const String FIELD_LINK_OS_VERSION = "linkOSVersion";
-  static const String FIELD_PRINTER_DPI = "printerDpi";
-  static const String FIELD_DEVICE_PRINT_HEAD_RESOLUTION =
-      "devicePrintHeadResolution";
+  static const String _kFieldDarkness = "darkness";
+  static const String _kFieldPrintSpeed = "printSpeed";
+  static const String _kFieldTearOff = "tearOff";
+  static const String _kFieldMediaType = "mediaType";
+  static const String _kFieldPrintMethod = "printMethod";
+  static const String _kFieldPrintWidth = "printWidth";
+  static const String _kFieldLabelLength = "labelLength";
+  static const String _kFieldLabelLengthMax = "labelLengthMax";
+  static const String _kFieldZplMode = "zplMode";
+  static const String _kFieldPowerUpAction = "powerUpAction";
+  static const String _kFieldHeadCloseAction = "headCloseAction";
+  static const String _kFieldLabelTop = "labelTop";
+  static const String _kFieldLeftPosition = "leftPosition";
+  static const String _kFieldPrintMode = "printMode";
+  static const String _kFieldReprintMode = "reprintMode";
+  static const String _kFieldVirtualDevice = "virtualDevice";
+  static const String _kFieldPrinterModelName = "printerModelName";
+  static const String _kFieldDeviceFriendlyName = "deviceFriendlyName";
+  static const String _kFieldFirmware = "firmware";
+  static const String _kFieldLinkOsVersion = "linkOSVersion";
+  static const String _kFieldPrinterDpi = "printerDpi";
+  static const String _kFieldDevicePrintHeadResolution = "devicePrintHeadResolution";
 
   // Writable settings
   /// To set the darkness and relative darkness
@@ -209,72 +208,71 @@ class PrinterSettings {
   });
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-        FIELD_DARKNESS: darkness,
-        FIELD_PRINT_SPEED: printSpeed,
-        FIELD_TEAR_OFF: tearOff,
-        FIELD_MEDIA_TYPE: mediaType?.name,
-        FIELD_PRINT_METHOD: printMethod?.name,
-        FIELD_PRINT_WIDTH: printWidth,
-        FIELD_LABEL_LENGTH: labelLength,
-        FIELD_LABEL_LENGTH_MAX: labelLengthMax,
-        FIELD_ZPL_MODE: zplMode?.name,
-        FIELD_POWER_UP_ACTION: powerUpAction?.name,
-        FIELD_HEAD_CLOSE_ACTION: headCloseAction?.name,
-        FIELD_LABEL_TOP: labelTop,
-        FIELD_LEFT_POSITION: leftPosition,
-        FIELD_PRINT_MODE: printMode?.name,
-        FIELD_REPRINT_MODE: reprintMode?.name,
-        FIELD_VIRTUAL_DEVICE: virtualDevice?.name,
-        FIELD_PRINTER_MODEL_NAME: printerModelName,
-        FIELD_DEVICE_FRIENDLY_NAME: deviceFriendlyName,
-        FIELD_FIRMWARE: firmware,
-        FIELD_LINK_OS_VERSION: linkOSVersion,
-        FIELD_PRINTER_DPI: printerDpi,
-        FIELD_DEVICE_PRINT_HEAD_RESOLUTION: devicePrintHeadResolution,
+        _kFieldDarkness: darkness,
+        _kFieldPrintSpeed: printSpeed,
+        _kFieldTearOff: tearOff,
+        _kFieldMediaType: mediaType?.name,
+        _kFieldPrintMethod: printMethod?.name,
+        _kFieldPrintWidth: printWidth,
+        _kFieldLabelLength: labelLength,
+        _kFieldLabelLengthMax: labelLengthMax,
+        _kFieldZplMode: zplMode?.name,
+        _kFieldPowerUpAction: powerUpAction?.name,
+        _kFieldHeadCloseAction: headCloseAction?.name,
+        _kFieldLabelTop: labelTop,
+        _kFieldLeftPosition: leftPosition,
+        _kFieldPrintMode: printMode?.name,
+        _kFieldReprintMode: reprintMode?.name,
+        _kFieldVirtualDevice: virtualDevice?.name,
+        _kFieldPrinterModelName: printerModelName,
+        _kFieldDeviceFriendlyName: deviceFriendlyName,
+        _kFieldFirmware: firmware,
+        _kFieldLinkOsVersion: linkOSVersion,
+        _kFieldPrinterDpi: printerDpi,
+        _kFieldDevicePrintHeadResolution: devicePrintHeadResolution,
       };
 
   factory PrinterSettings.fromMap(Map<dynamic, dynamic> map) => PrinterSettings(
-        darkness: double.tryParse(map[FIELD_DARKNESS]),
-        printSpeed: double.tryParse(map[FIELD_PRINT_SPEED]),
-        tearOff: int.tryParse(map[FIELD_TEAR_OFF]),
-        mediaType: MediaTypeUtils.valueOf(map[FIELD_MEDIA_TYPE]),
-        printMethod: PrintMethodUtils.valueOf(map[FIELD_PRINT_METHOD]),
-        printWidth: int.tryParse(map[FIELD_PRINT_WIDTH]),
-        labelLength: int.tryParse(map[FIELD_LABEL_LENGTH]),
-        labelLengthMax: double.tryParse(map[FIELD_LABEL_LENGTH_MAX]),
-        zplMode: ZPLModeUtils.valueOf(map[FIELD_ZPL_MODE]),
-        powerUpAction: PowerUpActionUtils.valueOf(map[FIELD_POWER_UP_ACTION]),
-        headCloseAction:
-            HeadCloseActionUtils.valueOf(map[FIELD_HEAD_CLOSE_ACTION]),
-        labelTop: int.tryParse(map[FIELD_LABEL_TOP]),
-        leftPosition: int.tryParse(map[FIELD_LEFT_POSITION]),
-        printMode: PrintModeUtils.valueOf(map[FIELD_PRINT_MODE]),
-        reprintMode: ReprintModeUtils.valueOf(map[FIELD_REPRINT_MODE]),
-        virtualDevice: VirtualDevice.valueOf(map[FIELD_VIRTUAL_DEVICE]),
-        printerModelName: map[FIELD_PRINTER_MODEL_NAME],
-        deviceFriendlyName: map[FIELD_DEVICE_FRIENDLY_NAME],
-        firmware: map[FIELD_FIRMWARE],
-        linkOSVersion: map[FIELD_LINK_OS_VERSION],
-        printerDpi: map[FIELD_PRINTER_DPI],
-        devicePrintHeadResolution: map[FIELD_DEVICE_PRINT_HEAD_RESOLUTION],
+        darkness: double.tryParse(map[_kFieldDarkness]),
+        printSpeed: double.tryParse(map[_kFieldPrintSpeed]),
+        tearOff: int.tryParse(map[_kFieldTearOff]),
+        mediaType: MediaTypeUtils.valueOf(map[_kFieldMediaType]),
+        printMethod: PrintMethodUtils.valueOf(map[_kFieldPrintMethod]),
+        printWidth: int.tryParse(map[_kFieldPrintWidth]),
+        labelLength: int.tryParse(map[_kFieldLabelLength]),
+        labelLengthMax: double.tryParse(map[_kFieldLabelLengthMax]),
+        zplMode: ZPLModeUtils.valueOf(map[_kFieldZplMode]),
+        powerUpAction: PowerUpActionUtils.valueOf(map[_kFieldPowerUpAction]),
+        headCloseAction: HeadCloseActionUtils.valueOf(map[_kFieldHeadCloseAction]),
+        labelTop: int.tryParse(map[_kFieldLabelTop]),
+        leftPosition: int.tryParse(map[_kFieldLeftPosition]),
+        printMode: PrintModeUtils.valueOf(map[_kFieldPrintMode]),
+        reprintMode: ReprintModeUtils.valueOf(map[_kFieldReprintMode]),
+        virtualDevice: VirtualDevice.valueOf(map[_kFieldVirtualDevice]),
+        printerModelName: map[_kFieldPrinterModelName],
+        deviceFriendlyName: map[_kFieldDeviceFriendlyName],
+        firmware: map[_kFieldFirmware],
+        linkOSVersion: map[_kFieldLinkOsVersion],
+        printerDpi: map[_kFieldPrinterDpi],
+        devicePrintHeadResolution: map[_kFieldDevicePrintHeadResolution],
       );
 
   factory PrinterSettings.defaultSettings() => PrinterSettings(
         darkness: 10,
         printSpeed: 6,
         tearOff: 0,
-        mediaType: MediaType.MARK,
-        printMethod: PrintMethod.DIRECT_THERMAL,
+        mediaType: MediaType.mark,
+        printMethod: PrintMethod.directThermal,
         printWidth: 568, //600
         labelLength: 1202,
         labelLengthMax: 39,
-        zplMode: ZPLMode.ZPL_II,
-        powerUpAction: PowerUpAction.NO_MOTION,
-        headCloseAction: HeadCloseAction.NO_MOTION,
+        zplMode: ZPLMode.zplIi,
+        powerUpAction: PowerUpAction.noMotion,
+        headCloseAction: HeadCloseAction.noMotion,
         labelTop: 0,
         leftPosition: 0,
-        printMode: PrintMode.TEAR_OFF,
-        reprintMode: ReprintMode.OFF,
+        printMode: PrintMode.tearOff,
+        reprintMode: ReprintMode.off,
         virtualDevice: VirtualDevice.none,
       );
 }
