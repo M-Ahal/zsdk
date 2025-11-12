@@ -137,7 +137,7 @@ final class ZSDK {
   }) => _channel
       .invokeMethod(
         _kSetPrinterSettingsOverTcpIp,
-        {_address: address, _port: port}..addAll(settings.toMap()),
+        {_address: address, _port: port}..addAll(settings.toJson()),
       )
       .timeout(
         timeout ??= const Duration(seconds: _kDefaultConnectionTimeout),

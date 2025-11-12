@@ -1,3 +1,5 @@
+import 'package:json_annotation/json_annotation.dart';
+
 import 'enumerators/head_close_action.dart';
 import 'enumerators/media_type.dart';
 import 'enumerators/power_up_action.dart';
@@ -9,31 +11,10 @@ import 'enumerators/zpl_mode.dart';
 import 'typedefs.dart';
 
 /// Created by luis901101 on 2020-02-10.
-final class PrinterSettings {
-  /// Fields name
-  static const _kFieldDarkness = 'darkness';
-  static const _kFieldPrintSpeed = 'printSpeed';
-  static const _kFieldTearOff = 'tearOff';
-  static const _kFieldMediaType = 'mediaType';
-  static const _kFieldPrintMethod = 'printMethod';
-  static const _kFieldPrintWidth = 'printWidth';
-  static const _kFieldLabelLength = 'labelLength';
-  static const _kFieldLabelLengthMax = 'labelLengthMax';
-  static const _kFieldZplMode = 'zplMode';
-  static const _kFieldPowerUpAction = 'powerUpAction';
-  static const _kFieldHeadCloseAction = 'headCloseAction';
-  static const _kFieldLabelTop = 'labelTop';
-  static const _kFieldLeftPosition = 'leftPosition';
-  static const _kFieldPrintMode = 'printMode';
-  static const _kFieldReprintMode = 'reprintMode';
-  static const _kFieldVirtualDevice = 'virtualDevice';
-  static const _kFieldPrinterModelName = 'printerModelName';
-  static const _kFieldDeviceFriendlyName = 'deviceFriendlyName';
-  static const _kFieldFirmware = 'firmware';
-  static const _kFieldLinkOsVersion = 'linkOSVersion';
-  static const _kFieldPrinterDpi = 'printerDpi';
-  static const _kFieldDevicePrintHeadResolution = 'devicePrintHeadResolution';
+part 'printer_settings.g.dart';
 
+@JsonSerializable()
+final class PrinterSettings {
   // Writable settings
   /// To set the darkness and relative darkness
   /// Values
@@ -207,82 +188,6 @@ final class PrinterSettings {
     this.devicePrintHeadResolution,
   });
 
-  Json toMap() => {
-    _kFieldDarkness: darkness,
-    _kFieldPrintSpeed: printSpeed,
-    _kFieldTearOff: tearOff,
-    _kFieldMediaType: mediaType?.name,
-    _kFieldPrintMethod: printMethod?.name,
-    _kFieldPrintWidth: printWidth,
-    _kFieldLabelLength: labelLength,
-    _kFieldLabelLengthMax: labelLengthMax,
-    _kFieldZplMode: zplMode?.name,
-    _kFieldPowerUpAction: powerUpAction?.name,
-    _kFieldHeadCloseAction: headCloseAction?.name,
-    _kFieldLabelTop: labelTop,
-    _kFieldLeftPosition: leftPosition,
-    _kFieldPrintMode: printMode?.name,
-    _kFieldReprintMode: reprintMode?.name,
-    _kFieldVirtualDevice: virtualDevice?.name,
-    _kFieldPrinterModelName: printerModelName,
-    _kFieldDeviceFriendlyName: deviceFriendlyName,
-    _kFieldFirmware: firmware,
-    _kFieldLinkOsVersion: linkOSVersion,
-    _kFieldPrinterDpi: printerDpi,
-    _kFieldDevicePrintHeadResolution: devicePrintHeadResolution,
-  };
-
-  factory PrinterSettings.fromMap(Json map) => PrinterSettings(
-    darkness: map[_kFieldDarkness] == null ? null : double.tryParse(map[_kFieldDarkness] as String),
-    printSpeed: map[_kFieldPrintSpeed] == null
-        ? null
-        : double.tryParse(map[_kFieldPrintSpeed] as String),
-    tearOff: map[_kFieldTearOff] == null ? null : int.tryParse(map[_kFieldTearOff] as String),
-    mediaType: map[_kFieldMediaType] == null
-        ? null
-        : MediaType.values.byName(map[_kFieldMediaType] as String),
-    printMethod: map[_kFieldPrintMethod] == null
-        ? null
-        : PrintMethod.values.byName(map[_kFieldPrintMethod] as String),
-    printWidth: map[_kFieldPrintWidth] == null
-        ? null
-        : int.tryParse(map[_kFieldPrintWidth] as String),
-    labelLength: map[_kFieldLabelLength] == null
-        ? null
-        : int.tryParse(map[_kFieldLabelLength] as String),
-    labelLengthMax: map[_kFieldLabelLengthMax] == null
-        ? null
-        : double.tryParse(map[_kFieldLabelLengthMax] as String),
-    zplMode: map[_kFieldZplMode] == null
-        ? null
-        : ZPLMode.values.byName(map[_kFieldZplMode] as String),
-    powerUpAction: map[_kFieldPowerUpAction] == null
-        ? null
-        : PowerUpAction.values.byName(map[_kFieldPowerUpAction] as String),
-    headCloseAction: map[_kFieldHeadCloseAction] == null
-        ? null
-        : HeadCloseAction.values.byName(map[_kFieldHeadCloseAction] as String),
-    labelTop: map[_kFieldLabelTop] == null ? null : int.tryParse(map[_kFieldLabelTop] as String),
-    leftPosition: map[_kFieldLeftPosition] == null
-        ? null
-        : int.tryParse(map[_kFieldLeftPosition] as String),
-    printMode: map[_kFieldPrintMode] == null
-        ? null
-        : PrintMode.values.byName(map[_kFieldPrintMode] as String),
-    reprintMode: map[_kFieldReprintMode] == null
-        ? null
-        : ReprintMode.values.byName(map[_kFieldReprintMode] as String),
-    virtualDevice: map[_kFieldVirtualDevice] == null
-        ? null
-        : VirtualDevice.values.byName(map[_kFieldVirtualDevice] as String),
-    printerModelName: map[_kFieldPrinterModelName] as String?,
-    deviceFriendlyName: map[_kFieldDeviceFriendlyName] as String?,
-    firmware: map[_kFieldFirmware] as String?,
-    linkOSVersion: map[_kFieldLinkOsVersion] as String?,
-    printerDpi: map[_kFieldPrinterDpi] as String?,
-    devicePrintHeadResolution: map[_kFieldDevicePrintHeadResolution] as String?,
-  );
-
   factory PrinterSettings.defaultSettings() => const PrinterSettings(
     darkness: 10,
     printSpeed: 6,
@@ -301,4 +206,8 @@ final class PrinterSettings {
     reprintMode: ReprintMode.off,
     virtualDevice: VirtualDevice.none,
   );
+
+  Json toJson() => _$PrinterSettingsToJson(this);
+
+  factory PrinterSettings.fromJson(Json json) => _$PrinterSettingsFromJson(json);
 }

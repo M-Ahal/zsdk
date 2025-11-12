@@ -1,8 +1,13 @@
+import 'package:json_annotation/json_annotation.dart';
+
 import 'enumerators/cause.dart';
 import 'enumerators/status.dart';
 import 'typedefs.dart';
 
+part 'status_info.g.dart';
+
 /// Created by luis901101 on 2020-01-07.
+@JsonSerializable()
 final class StatusInfo {
   final Status status;
   final Cause cause;
@@ -11,10 +16,7 @@ final class StatusInfo {
     : status = status ?? Status.unknown,
       cause = cause ?? Cause.unknown;
 
-  Json toMap() => {'status': status.name, 'cause': cause.name};
+  Json toJson() => _$StatusInfoToJson(this);
 
-  factory StatusInfo.fromMap(Json map) => StatusInfo(
-    map['status'] == null ? null : Status.values.byName(map['status'] as String),
-    map['cause'] == null ? null : Cause.values.byName(map['cause'] as String),
-  );
+  factory StatusInfo.fromJson(Json json) => _$StatusInfoFromJson(json);
 }
