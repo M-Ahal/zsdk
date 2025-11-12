@@ -1,9 +1,10 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:zsdk/zsdk.dart' as Printer;
+import 'package:zsdk/zsdk.dart' as printer;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,19 +13,19 @@ void main() {
   ));
 }
 
-const String btnPrintPdfFileOverTCPIP = 'btnPrintPdfFileOverTCPIP';
-const String btnPrintZplFileOverTCPIP = 'btnPrintZplFileOverTCPIP';
-const String btnPrintZplDataOverTCPIP = 'btnPrintZplDataOverTCPIP';
-const String btnCheckPrinterStatus = 'btnCheckPrinterStatus';
-const String btnGetPrinterSettings = 'btnGetPrinterSettings';
-const String btnSetPrinterSettings = 'btnSetPrinterSettings';
-const String btnResetPrinterSettings = 'btnResetPrinterSettings';
-const String btnDoManualCalibration = 'btnDoManualCalibration';
-const String btnPrintConfigurationLabel = 'btnPrintConfigurationLabel';
-const String btnRebootPrinter = 'btnRebootPrinter';
+const btnPrintPdfFileOverTCPIP = 'btnPrintPdfFileOverTCPIP';
+const btnPrintZplFileOverTCPIP = 'btnPrintZplFileOverTCPIP';
+const btnPrintZplDataOverTCPIP = 'btnPrintZplDataOverTCPIP';
+const btnCheckPrinterStatus = 'btnCheckPrinterStatus';
+const btnGetPrinterSettings = 'btnGetPrinterSettings';
+const btnSetPrinterSettings = 'btnSetPrinterSettings';
+const btnResetPrinterSettings = 'btnResetPrinterSettings';
+const btnDoManualCalibration = 'btnDoManualCalibration';
+const btnPrintConfigurationLabel = 'btnPrintConfigurationLabel';
+const btnRebootPrinter = 'btnRebootPrinter';
 
 class MyApp extends StatefulWidget {
-  final Printer.ZSDK zsdk = Printer.ZSDK();
+  final zsdk = printer.ZSDK();
 
   MyApp({super.key});
 
@@ -33,15 +34,15 @@ class MyApp extends StatefulWidget {
 }
 
 enum OperationStatus {
-  SENDING,
-  RECEIVING,
-  SUCCESS,
-  ERROR,
-  NONE,
+  sending,
+  receiving,
+  success,
+  error,
+  none,
 }
 
 class _MyAppState extends State<MyApp> {
-  final addressIpController = TextEditingController(text: "10.0.0.11");
+  final addressIpController = TextEditingController(text: '10.0.0.11');
   final addressPortController = TextEditingController();
   final pathController = TextEditingController();
   final zplDataController =
@@ -58,27 +59,27 @@ class _MyAppState extends State<MyApp> {
   final labelLengthMaxController = TextEditingController();
   final labelTopController = TextEditingController();
   final leftPositionController = TextEditingController();
-  Printer.MediaType? selectedMediaType;
-  Printer.PrintMethod? selectedPrintMethod;
-  Printer.ZPLMode? selectedZPLMode;
-  Printer.PowerUpAction? selectedPowerUpAction;
-  Printer.HeadCloseAction? selectedHeadCloseAction;
-  Printer.PrintMode? selectedPrintMode;
-  Printer.ReprintMode? selectedReprintMode;
-  Printer.VirtualDevice? selectedVirtualDevice;
+  printer.MediaType? selectedMediaType;
+  printer.PrintMethod? selectedPrintMethod;
+  printer.ZPLMode? selectedZPLMode;
+  printer.PowerUpAction? selectedPowerUpAction;
+  printer.HeadCloseAction? selectedHeadCloseAction;
+  printer.PrintMode? selectedPrintMode;
+  printer.ReprintMode? selectedReprintMode;
+  printer.VirtualDevice? selectedVirtualDevice;
 
-  Printer.PrinterSettings? settings;
+  printer.PrinterSettings? settings;
 
-  Printer.Orientation printerOrientation = Printer.Orientation.landscape;
+  printer.Orientation printerOrientation = printer.Orientation.landscape;
   String? message;
   String? statusMessage;
   String? settingsMessage;
   String? calibrationMessage;
-  OperationStatus printStatus = OperationStatus.NONE;
-  OperationStatus checkingStatus = OperationStatus.NONE;
-  OperationStatus settingsStatus = OperationStatus.NONE;
-  OperationStatus calibrationStatus = OperationStatus.NONE;
-  OperationStatus rebootingStatus = OperationStatus.NONE;
+  OperationStatus printStatus = OperationStatus.none;
+  OperationStatus checkingStatus = OperationStatus.none;
+  OperationStatus settingsStatus = OperationStatus.none;
+  OperationStatus calibrationStatus = OperationStatus.none;
+  OperationStatus rebootingStatus = OperationStatus.none;
   String? filePath;
   String? zplData;
 
@@ -88,21 +89,21 @@ class _MyAppState extends State<MyApp> {
   }
 
   String getName<T>(T value) {
-    String name = 'Unknown';
-    if (value is Printer.HeadCloseAction) name = value.name;
-    if (value is Printer.MediaType) name = value.name;
-    if (value is Printer.PowerUpAction) name = value.name;
-    if (value is Printer.PrintMethod) name = value.name;
-    if (value is Printer.PrintMode) name = value.name;
-    if (value is Printer.ReprintMode) name = value.name;
-    if (value is Printer.VirtualDevice) name = value.name;
-    if (value is Printer.ZPLMode) name = value.name;
+    var name = 'Unknown';
+    if (value is printer.HeadCloseAction) name = value.name;
+    if (value is printer.MediaType) name = value.name;
+    if (value is printer.PowerUpAction) name = value.name;
+    if (value is printer.PrintMethod) name = value.name;
+    if (value is printer.PrintMode) name = value.name;
+    if (value is printer.ReprintMode) name = value.name;
+    if (value is printer.VirtualDevice) name = value.name;
+    if (value is printer.ZPLMode) name = value.name;
     return name;
   }
 
   List<DropdownMenuItem<T>> generateDropdownItems<T>(List<T> values) {
-    List<DropdownMenuItem<T>> items = [];
-    for (var value in values) {
+    final items = <DropdownMenuItem<T>>[];
+    for (final value in values) {
       items.add(DropdownMenuItem<T>(
         value: value,
         child: Text(getName(value)),
@@ -112,716 +113,710 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade300,
-      appBar: AppBar(
-        title: const Text('Zebra SDK Plugin example app'),
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(8),
-        child: Scrollbar(
-            child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'Print file over TCP/IP',
-                style: TextStyle(fontSize: 18),
-              ),
-              const Divider(
-                color: Colors.transparent,
-              ),
-              Card(
-                elevation: 4,
-                margin: const EdgeInsets.all(8),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    children: <Widget>[
-                      const Text(
-                        'File to print',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      TextField(
-                        controller: pathController,
-                        decoration: const InputDecoration(labelText: "File path"),
-                      ),
-                      const Divider(
-                        color: Colors.transparent,
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: () async {
-                                try {
-                                  FilePickerResult? result =
-                                      await FilePicker.platform.pickFiles(type: FileType.any);
-                                  if (result != null) {
-                                    filePath = result.files.single.path;
-                                    if (filePath != null) {
-                                      setState(() {
-                                        pathController.text = filePath ?? '';
-                                      });
-                                    }
-                                  }
-                                } catch (e) {
-                                  showSnackBar(e.toString());
-                                }
-                              },
-                              child: Text(
-                                "Pick .zpl file".toUpperCase(),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          const VerticalDivider(
-                            color: Colors.transparent,
-                          ),
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.lightGreen,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: () async {
-                                try {
-                                  FilePickerResult? result =
-                                      await FilePicker.platform.pickFiles(type: FileType.any);
-                                  if (result != null) {
-                                    filePath = result.files.single.path;
-                                    if (filePath != null) {
-                                      setState(() {
-                                        pathController.text = filePath ?? '';
-                                      });
-                                    }
-                                  }
-                                } catch (e) {
-                                  showSnackBar(e.toString());
-                                }
-                              },
-                              child: Text(
-                                "Pick .pdf file".toUpperCase(),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Colors.grey.shade300,
+        appBar: AppBar(
+          title: const Text('Zebra SDK Plugin example app'),
+        ),
+        body: Container(
+          padding: const EdgeInsets.all(8),
+          child: Scrollbar(
+              child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'Print file over TCP/IP',
+                  style: TextStyle(fontSize: 18),
                 ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              Card(
-                elevation: 4,
-                margin: const EdgeInsets.all(8),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    children: <Widget>[
-                      const Text(
-                        'ZPL data to print',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      TextField(
-                        controller: zplDataController,
-                        decoration: const InputDecoration(labelText: "ZPL data"),
-                        maxLines: 5,
-                      ),
-                    ],
-                  ),
+                const Divider(
+                  color: Colors.transparent,
                 ),
-              ),
-              Card(
-                elevation: 4,
-                margin: const EdgeInsets.all(8),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    children: <Widget>[
-                      const Text(
-                        'Printer address',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      TextField(
-                        controller: addressIpController,
-                        decoration: const InputDecoration(labelText: "Printer IP address"),
-                      ),
-                      TextField(
-                        controller: addressPortController,
-                        decoration:
-                            const InputDecoration(labelText: "Printer port (defaults to 9100)"),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Visibility(
-                        visible: checkingStatus != OperationStatus.NONE ||
-                            rebootingStatus != OperationStatus.NONE,
-                        child: Column(
-                          children: <Widget>[
-                            Text(
-                              "$statusMessage",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: getOperationStatusColor(
-                                      checkingStatus != OperationStatus.NONE
-                                          ? checkingStatus
-                                          : rebootingStatus)),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.orange,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: checkingStatus == OperationStatus.RECEIVING
-                                  ? null
-                                  : () => onClick(btnCheckPrinterStatus),
-                              child: Text(
-                                "Check printer status".toUpperCase(),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: checkingStatus == OperationStatus.SENDING
-                                  ? null
-                                  : () => onClick(btnRebootPrinter),
-                              child: Text(
-                                "Reboot Printer".toUpperCase(),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Card(
-                elevation: 4,
-                margin: const EdgeInsets.all(8),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const Center(
-                        child: Text(
-                          'Printer settings',
+                Card(
+                  elevation: 4,
+                  margin: const EdgeInsets.all(8),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      children: <Widget>[
+                        const Text(
+                          'File to print',
                           style: TextStyle(fontSize: 16),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      RichText(
-                        text: TextSpan(
-                            style: TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
-                            children: [
-                              const TextSpan(
-                                  text: "Brand and model: ",
-                                  style: TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(text: settings?.printerModelName ?? "Unknown"),
-                            ]),
-                      ),
-                      const Divider(
-                        color: Colors.transparent,
-                        height: 4,
-                      ),
-                      RichText(
-                        text: TextSpan(
-                            style: TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
-                            children: [
-                              const TextSpan(
-                                  text: "Device friendly name: ",
-                                  style: TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(text: settings?.deviceFriendlyName ?? "Unknown"),
-                            ]),
-                      ),
-                      const Divider(
-                        color: Colors.transparent,
-                        height: 4,
-                      ),
-                      RichText(
-                        text: TextSpan(
-                            style: TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
-                            children: [
-                              const TextSpan(
-                                  text: "Firmware: ",
-                                  style: TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(text: settings?.firmware ?? "Unknown"),
-                            ]),
-                      ),
-                      const Divider(
-                        color: Colors.transparent,
-                        height: 4,
-                      ),
-                      RichText(
-                        text: TextSpan(
-                            style: TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
-                            children: [
-                              const TextSpan(
-                                  text: "Link-OS Version: ",
-                                  style: TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(text: settings?.linkOSVersion ?? "Unknown"),
-                            ]),
-                      ),
-                      const Divider(
-                        color: Colors.transparent,
-                        height: 4,
-                      ),
-                      RichText(
-                        text: TextSpan(
-                            style: TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
-                            children: [
-                              const TextSpan(
-                                  text: "Printer DPI: ",
-                                  style: TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(text: settings?.printerDpi ?? "Unknown"),
-                            ]),
-                      ),
-                      RichText(
-                        text: TextSpan(
-                            style: TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
-                            children: [
-                              const TextSpan(
-                                  text: "Resolution in dots per millimeter (dpmm): ",
-                                  style: TextStyle(fontWeight: FontWeight.bold)),
-                              TextSpan(
-                                  text: settings?.devicePrintHeadResolution != null
-                                      ? "${double.tryParse(settings?.devicePrintHeadResolution ?? '')?.truncate()}dpmm"
-                                      : "Unknown"),
-                            ]),
-                      ),
-                      TextField(
-                        controller: darknessController,
-                        keyboardType:
-                            const TextInputType.numberWithOptions(signed: true, decimal: true),
-                        textInputAction: TextInputAction.done,
-                        decoration: const InputDecoration(labelText: "Darkness"),
-                      ),
-                      TextField(
-                        controller: printSpeedController,
-                        keyboardType:
-                            const TextInputType.numberWithOptions(signed: false, decimal: false),
-                        textInputAction: TextInputAction.done,
-                        decoration: const InputDecoration(labelText: "Print speed"),
-                      ),
-                      TextField(
-                        controller: tearOffController,
-                        keyboardType:
-                            const TextInputType.numberWithOptions(signed: true, decimal: false),
-                        textInputAction: TextInputAction.done,
-                        decoration: const InputDecoration(labelText: "Tear off"),
-                      ),
-                      DropdownButtonFormField<Printer.MediaType>(
-                        items: generateDropdownItems(Printer.MediaType.values),
-                        initialValue: selectedMediaType,
-                        onChanged: (value) => setState(() => selectedMediaType = value),
-                        decoration: const InputDecoration(labelText: "Media type"),
-                      ),
-                      DropdownButtonFormField<Printer.PrintMethod>(
-                        items: generateDropdownItems(Printer.PrintMethod.values),
-                        initialValue: selectedPrintMethod,
-                        onChanged: (value) => setState(() => selectedPrintMethod = value),
-                        decoration: const InputDecoration(labelText: "Print method"),
-                      ),
-                      TextField(
-                        controller: printWidthController,
-                        keyboardType:
-                            const TextInputType.numberWithOptions(signed: false, decimal: false),
-                        textInputAction: TextInputAction.done,
-                        decoration: const InputDecoration(labelText: "Print width"),
-                      ),
-                      TextField(
-                        controller: labelLengthController,
-                        keyboardType:
-                            const TextInputType.numberWithOptions(signed: false, decimal: false),
-                        textInputAction: TextInputAction.done,
-                        decoration: const InputDecoration(labelText: "Label length"),
-                      ),
-                      TextField(
-                        controller: labelLengthMaxController,
-                        keyboardType:
-                            const TextInputType.numberWithOptions(signed: false, decimal: true),
-                        textInputAction: TextInputAction.done,
-                        decoration: const InputDecoration(labelText: "Label length max"),
-                      ),
-                      DropdownButtonFormField<Printer.ZPLMode>(
-                        items: generateDropdownItems(Printer.ZPLMode.values),
-                        initialValue: selectedZPLMode,
-                        onChanged: (value) => setState(() => selectedZPLMode = value),
-                        decoration: const InputDecoration(labelText: "ZPL mode"),
-                      ),
-                      DropdownButtonFormField<Printer.PowerUpAction>(
-                        items: generateDropdownItems(Printer.PowerUpAction.values),
-                        initialValue: selectedPowerUpAction,
-                        onChanged: (value) => setState(() => selectedPowerUpAction = value),
-                        decoration: const InputDecoration(labelText: "Power up action"),
-                      ),
-                      DropdownButtonFormField<Printer.HeadCloseAction>(
-                        items: generateDropdownItems(Printer.HeadCloseAction.values),
-                        initialValue: selectedHeadCloseAction,
-                        onChanged: (value) => setState(() => selectedHeadCloseAction = value),
-                        decoration: const InputDecoration(labelText: "Head close action"),
-                      ),
-                      TextField(
-                        controller: labelTopController,
-                        keyboardType:
-                            const TextInputType.numberWithOptions(signed: true, decimal: false),
-                        textInputAction: TextInputAction.done,
-                        decoration: const InputDecoration(labelText: "Label top"),
-                      ),
-                      TextField(
-                        controller: leftPositionController,
-                        keyboardType:
-                            const TextInputType.numberWithOptions(signed: true, decimal: false),
-                        textInputAction: TextInputAction.done,
-                        decoration: const InputDecoration(labelText: "Left position"),
-                      ),
-                      DropdownButtonFormField<Printer.PrintMode>(
-                        items: generateDropdownItems(Printer.PrintMode.values),
-                        initialValue: selectedPrintMode,
-                        onChanged: (value) => setState(() => selectedPrintMode = value),
-                        decoration: const InputDecoration(labelText: "Print mode"),
-                      ),
-                      DropdownButtonFormField<Printer.ReprintMode>(
-                        items: generateDropdownItems(Printer.ReprintMode.values),
-                        initialValue: selectedReprintMode,
-                        onChanged: (value) => setState(() => selectedReprintMode = value),
-                        decoration: const InputDecoration(labelText: "Reprint mode"),
-                      ),
-                      DropdownButtonFormField<Printer.VirtualDevice>(
-                        items: generateDropdownItems(Printer.VirtualDevice.values),
-                        initialValue: selectedVirtualDevice,
-                        onChanged: (value) => setState(() => selectedVirtualDevice = value),
-                        decoration: const InputDecoration(labelText: "Virtual device"),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Visibility(
-                        visible: settingsStatus != OperationStatus.NONE,
-                        child: Column(
+                        TextField(
+                          controller: pathController,
+                          decoration: const InputDecoration(labelText: 'File path'),
+                        ),
+                        const Divider(
+                          color: Colors.transparent,
+                        ),
+                        Row(
                           children: <Widget>[
-                            Text(
-                              "$settingsMessage",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: getOperationStatusColor(settingsStatus)),
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.green,
+                                  foregroundColor: Colors.white,
+                                ),
+                                onPressed: () async {
+                                  try {
+                                    final result = await FilePicker.platform.pickFiles();
+                                    if (result != null) {
+                                      filePath = result.files.single.path;
+                                      if (filePath != null) {
+                                        setState(() {
+                                          pathController.text = filePath ?? '';
+                                        });
+                                      }
+                                    }
+                                  } on Exception catch (e) {
+                                    showSnackBar(e.toString());
+                                  }
+                                },
+                                child: Text(
+                                  'Pick .zpl file'.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                             ),
-                            const SizedBox(
-                              height: 16,
+                            const VerticalDivider(
+                              color: Colors.transparent,
+                            ),
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.lightGreen,
+                                  foregroundColor: Colors.white,
+                                ),
+                                onPressed: () async {
+                                  try {
+                                    final result = await FilePicker.platform.pickFiles();
+                                    if (result != null) {
+                                      filePath = result.files.single.path;
+                                      if (filePath != null) {
+                                        setState(() {
+                                          pathController.text = filePath ?? '';
+                                        });
+                                      }
+                                    }
+                                  } on Exception catch (e) {
+                                    showSnackBar(e.toString());
+                                  }
+                                },
+                                child: Text(
+                                  'Pick .pdf file'.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                             ),
                           ],
-                        ),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.deepPurple,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: settingsStatus == OperationStatus.SENDING ||
-                                      settingsStatus == OperationStatus.RECEIVING
-                                  ? null
-                                  : () => onClick(btnSetPrinterSettings),
-                              child: Text(
-                                "Set settings".toUpperCase(),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          const VerticalDivider(
-                            color: Colors.transparent,
-                          ),
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.purple,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: settingsStatus == OperationStatus.SENDING ||
-                                      settingsStatus == OperationStatus.RECEIVING
-                                  ? null
-                                  : () => onClick(btnGetPrinterSettings),
-                              child: Text(
-                                "Get settings".toUpperCase(),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.pink,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: settingsStatus == OperationStatus.SENDING ||
-                                      settingsStatus == OperationStatus.RECEIVING
-                                  ? null
-                                  : () => onClick(btnResetPrinterSettings),
-                              child: Text(
-                                "Reset settings".toUpperCase(),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Card(
-                elevation: 4,
-                margin: const EdgeInsets.all(8),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    children: <Widget>[
-                      const Text(
-                        'Printer calibration',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      Visibility(
-                        visible: calibrationStatus != OperationStatus.NONE,
-                        child: Column(
-                          children: <Widget>[
-                            Text(
-                              "$calibrationMessage",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: getOperationStatusColor(calibrationStatus)),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blueGrey,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: calibrationStatus == OperationStatus.SENDING
-                                  ? null
-                                  : () => onClick(btnDoManualCalibration),
-                              child: Text(
-                                "DO MANUAL CALIBRATION".toUpperCase(),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Card(
-                elevation: 4,
-                margin: const EdgeInsets.all(8),
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    children: <Widget>[
-                      const Text(
-                        'PDF print configurations',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      TextField(
-                        controller: widthController,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        decoration: const InputDecoration(
-                            labelText: "Paper width in cm (defaults to 15.20 cm)"),
-                      ),
-                      TextField(
-                        controller: heightController,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        decoration: const InputDecoration(
-                            labelText: "Paper height in cm (defaults to 7.00 cm)"),
-                      ),
-                      TextField(
-                        controller: dpiController,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        decoration: const InputDecoration(
-                            labelText: "Printer density per inch (defaults to 203 dpi)"),
-                      ),
-                      DropdownButtonFormField<Printer.Orientation>(
-                        items: const [
-                          DropdownMenuItem(
-                            value: Printer.Orientation.portrait,
-                            child: Text("Portrait"),
-                          ),
-                          DropdownMenuItem(
-                            value: Printer.Orientation.landscape,
-                            child: Text("Landscape"),
-                          )
-                        ],
-                        initialValue: printerOrientation,
-                        onChanged: (value) => setState(
-                            () => printerOrientation = value ?? Printer.Orientation.landscape),
-                        decoration: const InputDecoration(labelText: "Print orientation"),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              Visibility(
-                visible: printStatus != OperationStatus.NONE,
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "$message",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: getOperationStatusColor(printStatus)),
+                        )
+                      ],
                     ),
-                    const SizedBox(
-                      height: 16,
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Card(
+                  elevation: 4,
+                  margin: const EdgeInsets.all(8),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      children: <Widget>[
+                        const Text(
+                          'ZPL data to print',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        TextField(
+                          controller: zplDataController,
+                          decoration: const InputDecoration(labelText: 'ZPL data'),
+                          maxLines: 5,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  elevation: 4,
+                  margin: const EdgeInsets.all(8),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      children: <Widget>[
+                        const Text(
+                          'Printer address',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        TextField(
+                          controller: addressIpController,
+                          decoration: const InputDecoration(labelText: 'Printer IP address'),
+                        ),
+                        TextField(
+                          controller: addressPortController,
+                          decoration:
+                              const InputDecoration(labelText: 'Printer port (defaults to 9100)'),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Visibility(
+                          visible: checkingStatus != OperationStatus.none ||
+                              rebootingStatus != OperationStatus.none,
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                '$statusMessage',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: getOperationStatusColor(
+                                        checkingStatus != OperationStatus.none
+                                            ? checkingStatus
+                                            : rebootingStatus)),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.orange,
+                                  foregroundColor: Colors.white,
+                                ),
+                                onPressed: checkingStatus == OperationStatus.receiving
+                                    ? null
+                                    : () => onClick(btnCheckPrinterStatus),
+                                child: Text(
+                                  'Check printer status'.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.red,
+                                  foregroundColor: Colors.white,
+                                ),
+                                onPressed: checkingStatus == OperationStatus.sending
+                                    ? null
+                                    : () => onClick(btnRebootPrinter),
+                                child: Text(
+                                  'Reboot Printer'.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  elevation: 4,
+                  margin: const EdgeInsets.all(8),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const Center(
+                          child: Text(
+                            'Printer settings',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        RichText(
+                          text: TextSpan(
+                              style:
+                                  TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
+                              children: [
+                                const TextSpan(
+                                    text: 'Brand and model: ',
+                                    style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(text: settings?.printerModelName ?? 'Unknown'),
+                              ]),
+                        ),
+                        const Divider(
+                          color: Colors.transparent,
+                          height: 4,
+                        ),
+                        RichText(
+                          text: TextSpan(
+                              style:
+                                  TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
+                              children: [
+                                const TextSpan(
+                                    text: 'Device friendly name: ',
+                                    style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(text: settings?.deviceFriendlyName ?? 'Unknown'),
+                              ]),
+                        ),
+                        const Divider(
+                          color: Colors.transparent,
+                          height: 4,
+                        ),
+                        RichText(
+                          text: TextSpan(
+                              style:
+                                  TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
+                              children: [
+                                const TextSpan(
+                                    text: 'Firmware: ',
+                                    style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(text: settings?.firmware ?? 'Unknown'),
+                              ]),
+                        ),
+                        const Divider(
+                          color: Colors.transparent,
+                          height: 4,
+                        ),
+                        RichText(
+                          text: TextSpan(
+                              style:
+                                  TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
+                              children: [
+                                const TextSpan(
+                                    text: 'Link-OS Version: ',
+                                    style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(text: settings?.linkOSVersion ?? 'Unknown'),
+                              ]),
+                        ),
+                        const Divider(
+                          color: Colors.transparent,
+                          height: 4,
+                        ),
+                        RichText(
+                          text: TextSpan(
+                              style:
+                                  TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
+                              children: [
+                                const TextSpan(
+                                    text: 'Printer DPI: ',
+                                    style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(text: settings?.printerDpi ?? 'Unknown'),
+                              ]),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                              style:
+                                  TextStyle(color: Theme.of(context).textTheme.titleLarge?.color),
+                              children: [
+                                const TextSpan(
+                                    text: 'Resolution in dots per millimeter (dpmm): ',
+                                    style: TextStyle(fontWeight: FontWeight.bold)),
+                                TextSpan(
+                                    text: settings?.devicePrintHeadResolution != null
+                                        ? "${double.tryParse(settings?.devicePrintHeadResolution ?? '')?.truncate()}dpmm"
+                                        : 'Unknown'),
+                              ]),
+                        ),
+                        TextField(
+                          controller: darknessController,
+                          keyboardType:
+                              const TextInputType.numberWithOptions(signed: true, decimal: true),
+                          textInputAction: TextInputAction.done,
+                          decoration: const InputDecoration(labelText: 'Darkness'),
+                        ),
+                        TextField(
+                          controller: printSpeedController,
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          decoration: const InputDecoration(labelText: 'Print speed'),
+                        ),
+                        TextField(
+                          controller: tearOffController,
+                          keyboardType: const TextInputType.numberWithOptions(signed: true),
+                          textInputAction: TextInputAction.done,
+                          decoration: const InputDecoration(labelText: 'Tear off'),
+                        ),
+                        DropdownButtonFormField<printer.MediaType>(
+                          items: generateDropdownItems(printer.MediaType.values),
+                          initialValue: selectedMediaType,
+                          onChanged: (value) => setState(() => selectedMediaType = value),
+                          decoration: const InputDecoration(labelText: 'Media type'),
+                        ),
+                        DropdownButtonFormField<printer.PrintMethod>(
+                          items: generateDropdownItems(printer.PrintMethod.values),
+                          initialValue: selectedPrintMethod,
+                          onChanged: (value) => setState(() => selectedPrintMethod = value),
+                          decoration: const InputDecoration(labelText: 'Print method'),
+                        ),
+                        TextField(
+                          controller: printWidthController,
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          decoration: const InputDecoration(labelText: 'Print width'),
+                        ),
+                        TextField(
+                          controller: labelLengthController,
+                          keyboardType: TextInputType.number,
+                          textInputAction: TextInputAction.done,
+                          decoration: const InputDecoration(labelText: 'Label length'),
+                        ),
+                        TextField(
+                          controller: labelLengthMaxController,
+                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          textInputAction: TextInputAction.done,
+                          decoration: const InputDecoration(labelText: 'Label length max'),
+                        ),
+                        DropdownButtonFormField<printer.ZPLMode>(
+                          items: generateDropdownItems(printer.ZPLMode.values),
+                          initialValue: selectedZPLMode,
+                          onChanged: (value) => setState(() => selectedZPLMode = value),
+                          decoration: const InputDecoration(labelText: 'ZPL mode'),
+                        ),
+                        DropdownButtonFormField<printer.PowerUpAction>(
+                          items: generateDropdownItems(printer.PowerUpAction.values),
+                          initialValue: selectedPowerUpAction,
+                          onChanged: (value) => setState(() => selectedPowerUpAction = value),
+                          decoration: const InputDecoration(labelText: 'Power up action'),
+                        ),
+                        DropdownButtonFormField<printer.HeadCloseAction>(
+                          items: generateDropdownItems(printer.HeadCloseAction.values),
+                          initialValue: selectedHeadCloseAction,
+                          onChanged: (value) => setState(() => selectedHeadCloseAction = value),
+                          decoration: const InputDecoration(labelText: 'Head close action'),
+                        ),
+                        TextField(
+                          controller: labelTopController,
+                          keyboardType: const TextInputType.numberWithOptions(signed: true),
+                          textInputAction: TextInputAction.done,
+                          decoration: const InputDecoration(labelText: 'Label top'),
+                        ),
+                        TextField(
+                          controller: leftPositionController,
+                          keyboardType: const TextInputType.numberWithOptions(signed: true),
+                          textInputAction: TextInputAction.done,
+                          decoration: const InputDecoration(labelText: 'Left position'),
+                        ),
+                        DropdownButtonFormField<printer.PrintMode>(
+                          items: generateDropdownItems(printer.PrintMode.values),
+                          initialValue: selectedPrintMode,
+                          onChanged: (value) => setState(() => selectedPrintMode = value),
+                          decoration: const InputDecoration(labelText: 'Print mode'),
+                        ),
+                        DropdownButtonFormField<printer.ReprintMode>(
+                          items: generateDropdownItems(printer.ReprintMode.values),
+                          initialValue: selectedReprintMode,
+                          onChanged: (value) => setState(() => selectedReprintMode = value),
+                          decoration: const InputDecoration(labelText: 'Reprint mode'),
+                        ),
+                        DropdownButtonFormField<printer.VirtualDevice>(
+                          items: generateDropdownItems(printer.VirtualDevice.values),
+                          initialValue: selectedVirtualDevice,
+                          onChanged: (value) => setState(() => selectedVirtualDevice = value),
+                          decoration: const InputDecoration(labelText: 'Virtual device'),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Visibility(
+                          visible: settingsStatus != OperationStatus.none,
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                '$settingsMessage',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: getOperationStatusColor(settingsStatus)),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.deepPurple,
+                                  foregroundColor: Colors.white,
+                                ),
+                                onPressed: settingsStatus == OperationStatus.sending ||
+                                        settingsStatus == OperationStatus.receiving
+                                    ? null
+                                    : () => onClick(btnSetPrinterSettings),
+                                child: Text(
+                                  'Set settings'.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            const VerticalDivider(
+                              color: Colors.transparent,
+                            ),
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.purple,
+                                  foregroundColor: Colors.white,
+                                ),
+                                onPressed: settingsStatus == OperationStatus.sending ||
+                                        settingsStatus == OperationStatus.receiving
+                                    ? null
+                                    : () => onClick(btnGetPrinterSettings),
+                                child: Text(
+                                  'Get settings'.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.pink,
+                                  foregroundColor: Colors.white,
+                                ),
+                                onPressed: settingsStatus == OperationStatus.sending ||
+                                        settingsStatus == OperationStatus.receiving
+                                    ? null
+                                    : () => onClick(btnResetPrinterSettings),
+                                child: Text(
+                                  'Reset settings'.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  elevation: 4,
+                  margin: const EdgeInsets.all(8),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      children: <Widget>[
+                        const Text(
+                          'Printer calibration',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        Visibility(
+                          visible: calibrationStatus != OperationStatus.none,
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                '$calibrationMessage',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: getOperationStatusColor(calibrationStatus)),
+                              ),
+                              const SizedBox(
+                                height: 16,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blueGrey,
+                                  foregroundColor: Colors.white,
+                                ),
+                                onPressed: calibrationStatus == OperationStatus.sending
+                                    ? null
+                                    : () => onClick(btnDoManualCalibration),
+                                child: Text(
+                                  'DO MANUAL CALIBRATION'.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Card(
+                  elevation: 4,
+                  margin: const EdgeInsets.all(8),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      children: <Widget>[
+                        const Text(
+                          'PDF print configurations',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        TextField(
+                          controller: widthController,
+                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          decoration: const InputDecoration(
+                              labelText: 'Paper width in cm (defaults to 15.20 cm)'),
+                        ),
+                        TextField(
+                          controller: heightController,
+                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          decoration: const InputDecoration(
+                              labelText: 'Paper height in cm (defaults to 7.00 cm)'),
+                        ),
+                        TextField(
+                          controller: dpiController,
+                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          decoration: const InputDecoration(
+                              labelText: 'Printer density per inch (defaults to 203 dpi)'),
+                        ),
+                        DropdownButtonFormField<printer.Orientation>(
+                          items: const [
+                            DropdownMenuItem(
+                              value: printer.Orientation.portrait,
+                              child: Text('Portrait'),
+                            ),
+                            DropdownMenuItem(
+                              value: printer.Orientation.landscape,
+                              child: Text('Landscape'),
+                            )
+                          ],
+                          initialValue: printerOrientation,
+                          onChanged: (value) => setState(
+                              () => printerOrientation = value ?? printer.Orientation.landscape),
+                          decoration: const InputDecoration(labelText: 'Print orientation'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Visibility(
+                  visible: printStatus != OperationStatus.none,
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        '$message',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: getOperationStatusColor(printStatus)),
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                    ],
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.cyan,
+                    foregroundColor: Colors.white,
+                  ),
+                  onPressed: printStatus == OperationStatus.sending
+                      ? null
+                      : () => onClick(btnPrintConfigurationLabel),
+                  child: Text(
+                    'Test Print'.toUpperCase(),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blueAccent,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: printStatus == OperationStatus.sending
+                            ? null
+                            : () => onClick(btnPrintZplFileOverTCPIP),
+                        child: Text(
+                          'Print zpl from file'.toUpperCase(),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    const VerticalDivider(
+                      color: Colors.transparent,
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.lightBlue,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: printStatus == OperationStatus.sending
+                            ? null
+                            : () => onClick(btnPrintPdfFileOverTCPIP),
+                        child: Text(
+                          'Print pdf from file'.toUpperCase(),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.cyan,
-                  foregroundColor: Colors.white,
-                ),
-                onPressed: printStatus == OperationStatus.SENDING
-                    ? null
-                    : () => onClick(btnPrintConfigurationLabel),
-                child: Text(
-                  "Test Print".toUpperCase(),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent,
-                        foregroundColor: Colors.white,
-                      ),
-                      onPressed: printStatus == OperationStatus.SENDING
-                          ? null
-                          : () => onClick(btnPrintZplFileOverTCPIP),
-                      child: Text(
-                        "Print zpl from file".toUpperCase(),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueAccent,
+                    foregroundColor: Colors.white,
                   ),
-                  const VerticalDivider(
-                    color: Colors.transparent,
+                  onPressed: printStatus == OperationStatus.sending
+                      ? null
+                      : () => onClick(btnPrintZplDataOverTCPIP),
+                  child: Text(
+                    'Print zpl data'.toUpperCase(),
+                    textAlign: TextAlign.center,
                   ),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.lightBlue,
-                        foregroundColor: Colors.white,
-                      ),
-                      onPressed: printStatus == OperationStatus.SENDING
-                          ? null
-                          : () => onClick(btnPrintPdfFileOverTCPIP),
-                      child: Text(
-                        "Print pdf from file".toUpperCase(),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                  foregroundColor: Colors.white,
                 ),
-                onPressed: printStatus == OperationStatus.SENDING
-                    ? null
-                    : () => onClick(btnPrintZplDataOverTCPIP),
-                child: Text(
-                  "Print zpl data".toUpperCase(),
-                  textAlign: TextAlign.center,
+                const SizedBox(
+                  height: 100,
                 ),
-              ),
-              const SizedBox(
-                height: 100,
-              ),
-            ],
-          ),
-        )),
-      ),
-    );
-  }
+              ],
+            ),
+          )),
+        ),
+      );
 
   Color getOperationStatusColor(OperationStatus status) {
     switch (status) {
-      case OperationStatus.RECEIVING:
-      case OperationStatus.SENDING:
+      case OperationStatus.receiving:
+      case OperationStatus.sending:
         return Colors.blue;
-      case OperationStatus.SUCCESS:
+      case OperationStatus.success:
         return Colors.green;
-      case OperationStatus.ERROR:
+      case OperationStatus.error:
         return Colors.red;
       default:
         return Colors.black;
     }
   }
 
-  void updateSettings(Printer.PrinterSettings? newSettings) {
+  void updateSettings(printer.PrinterSettings? newSettings) {
     settings = newSettings;
 
     darknessController.text = "${settings?.darkness ?? ""}";
@@ -842,98 +837,98 @@ class _MyAppState extends State<MyApp> {
     selectedVirtualDevice = settings?.virtualDevice;
   }
 
-  onClick(String id) async {
+  Future<void> onClick(String id) async {
     try {
       switch (id) {
         case btnDoManualCalibration:
           setState(() {
-            calibrationMessage = "Starting manual callibration...";
-            calibrationStatus = OperationStatus.SENDING;
+            calibrationMessage = 'Starting manual callibration...';
+            calibrationStatus = OperationStatus.sending;
           });
-          widget.zsdk
+          unawaited(widget.zsdk
               .doManualCalibrationOverTCPIP(
             address: addressIpController.text,
             port: int.tryParse(addressPortController.text),
           )
               .then((value) {
             setState(() {
-              calibrationStatus = OperationStatus.SUCCESS;
-              calibrationMessage = "$value";
+              calibrationStatus = OperationStatus.success;
+              calibrationMessage = '$value';
             });
           }, onError: (error, stacktrace) {
             try {
               throw error;
             } on PlatformException catch (e) {
-              Printer.PrinterResponse printerResponse;
+              printer.PrinterResponse printerResponse;
               try {
-                printerResponse = Printer.PrinterResponse.fromJson(e.details);
+                printerResponse =
+                    printer.PrinterResponse.fromJson(e.details as Map<String, dynamic>);
                 calibrationMessage =
-                    "${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause} \n"
-                    "${printerResponse.settings?.toString()}";
-              } catch (e) {
+                    '${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause} \n'
+                    '${printerResponse.settings}';
+              } on Exception catch (e) {
                 print(e);
                 calibrationMessage = e.toString();
               }
             } on MissingPluginException catch (e) {
-              calibrationMessage = "${e.message}";
-            } catch (e) {
+              calibrationMessage = '${e.message}';
+            } on Exception catch (e) {
               calibrationMessage = e.toString();
             }
             setState(() {
-              calibrationStatus = OperationStatus.ERROR;
+              calibrationStatus = OperationStatus.error;
             });
-          });
-          break;
+          }));
         case btnGetPrinterSettings:
           setState(() {
-            settingsMessage = "Getting printer settings...";
-            settingsStatus = OperationStatus.RECEIVING;
+            settingsMessage = 'Getting printer settings...';
+            settingsStatus = OperationStatus.receiving;
           });
-          widget.zsdk
+          unawaited(widget.zsdk
               .getPrinterSettingsOverTCPIP(
             address: addressIpController.text,
             port: int.tryParse(addressPortController.text),
           )
               .then((value) {
             setState(() {
-              settingsStatus = OperationStatus.SUCCESS;
-              settingsMessage = "$value";
-              updateSettings((Printer.PrinterResponse.fromJson(value)).settings);
+              settingsStatus = OperationStatus.success;
+              settingsMessage = '$value';
+              updateSettings(printer.PrinterResponse.fromJson(value!).settings);
             });
           }, onError: (error, stacktrace) {
             try {
               throw error;
             } on PlatformException catch (e) {
-              Printer.PrinterResponse printerResponse;
+              printer.PrinterResponse printerResponse;
               try {
-                printerResponse = Printer.PrinterResponse.fromJson(e.details);
+                printerResponse =
+                    printer.PrinterResponse.fromJson(e.details as Map<String, dynamic>);
                 settingsMessage =
-                    "${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause} \n"
-                    "${printerResponse.settings?.toString()}";
-              } catch (e) {
+                    '${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause} \n'
+                    '${printerResponse.settings}';
+              } on Exception catch (e) {
                 print(e);
                 settingsMessage = e.toString();
               }
             } on MissingPluginException catch (e) {
-              settingsMessage = "${e.message}";
-            } catch (e) {
+              settingsMessage = '${e.message}';
+            } on Exception catch (e) {
               settingsMessage = e.toString();
             }
             setState(() {
-              settingsStatus = OperationStatus.ERROR;
+              settingsStatus = OperationStatus.error;
             });
-          });
-          break;
+          }));
         case btnSetPrinterSettings:
           setState(() {
-            settingsMessage = "Setting printer settings...";
-            settingsStatus = OperationStatus.SENDING;
+            settingsMessage = 'Setting printer settings...';
+            settingsStatus = OperationStatus.sending;
           });
-          widget.zsdk
+          unawaited(widget.zsdk
               .setPrinterSettingsOverTCPIP(
                   address: addressIpController.text,
                   port: int.tryParse(addressPortController.text),
-                  settings: Printer.PrinterSettings(
+                  settings: printer.PrinterSettings(
                     darkness: double.tryParse(darknessController.text),
                     printSpeed: double.tryParse(printSpeedController.text),
                     tearOff: int.tryParse(tearOffController.text),
@@ -990,210 +985,210 @@ class _MyAppState extends State<MyApp> {
                   )
               .then((value) {
             setState(() {
-              settingsStatus = OperationStatus.SUCCESS;
-              settingsMessage = "$value";
-              updateSettings((Printer.PrinterResponse.fromJson(value)).settings);
+              settingsStatus = OperationStatus.success;
+              settingsMessage = '$value';
+              updateSettings(printer.PrinterResponse.fromJson(value!).settings);
             });
           }, onError: (error, stacktrace) {
             try {
               throw error;
             } on PlatformException catch (e) {
-              Printer.PrinterResponse printerResponse;
+              printer.PrinterResponse printerResponse;
               try {
-                printerResponse = Printer.PrinterResponse.fromJson(e.details);
+                printerResponse =
+                    printer.PrinterResponse.fromJson(e.details as Map<String, dynamic>);
                 settingsMessage =
-                    "${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause} \n"
-                    "${printerResponse.settings?.toString()}";
-              } catch (e) {
+                    '${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause} \n'
+                    '${printerResponse.settings}';
+              } on Exception catch (e) {
                 print(e);
                 settingsMessage = e.toString();
               }
             } on MissingPluginException catch (e) {
-              settingsMessage = "${e.message}";
-            } catch (e) {
+              settingsMessage = '${e.message}';
+            } on Exception catch (e) {
               settingsMessage = e.toString();
             }
             setState(() {
-              settingsStatus = OperationStatus.ERROR;
+              settingsStatus = OperationStatus.error;
             });
-          });
-          break;
+          }));
         case btnResetPrinterSettings:
           setState(() {
-            settingsMessage = "Setting default settings...";
-            settingsStatus = OperationStatus.SENDING;
+            settingsMessage = 'Setting default settings...';
+            settingsStatus = OperationStatus.sending;
           });
-          widget.zsdk
+          unawaited(widget.zsdk
               .setPrinterSettingsOverTCPIP(
                   address: addressIpController.text,
                   port: int.tryParse(addressPortController.text),
-                  settings: Printer.PrinterSettings.defaultSettings())
+                  settings: printer.PrinterSettings.defaultSettings())
               .then((value) {
             setState(() {
-              settingsStatus = OperationStatus.SUCCESS;
-              settingsMessage = "$value";
-              updateSettings((Printer.PrinterResponse.fromJson(value)).settings);
+              settingsStatus = OperationStatus.success;
+              settingsMessage = '$value';
+              updateSettings(printer.PrinterResponse.fromJson(value!).settings);
             });
           }, onError: (error, stacktrace) {
             try {
               throw error;
             } on PlatformException catch (e) {
-              Printer.PrinterResponse printerResponse;
+              printer.PrinterResponse printerResponse;
               try {
-                printerResponse = Printer.PrinterResponse.fromJson(e.details);
+                printerResponse =
+                    printer.PrinterResponse.fromJson(e.details as Map<String, dynamic>);
                 settingsMessage =
-                    "${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause} \n"
-                    "${printerResponse.settings?.toString()}";
-              } catch (e) {
+                    '${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause} \n'
+                    '${printerResponse.settings}';
+              } on Exception catch (e) {
                 print(e);
                 settingsMessage = e.toString();
               }
             } on MissingPluginException catch (e) {
-              settingsMessage = "${e.message}";
-            } catch (e) {
+              settingsMessage = '${e.message}';
+            } on Exception catch (e) {
               settingsMessage = e.toString();
             }
             setState(() {
-              settingsStatus = OperationStatus.ERROR;
+              settingsStatus = OperationStatus.error;
             });
-          });
-          break;
+          }));
         case btnCheckPrinterStatus:
           setState(() {
-            statusMessage = "Checking printer status...";
-            checkingStatus = OperationStatus.RECEIVING;
+            statusMessage = 'Checking printer status...';
+            checkingStatus = OperationStatus.receiving;
           });
-          widget.zsdk
+          unawaited(widget.zsdk
               .checkPrinterStatusOverTCPIP(
             address: addressIpController.text,
             port: int.tryParse(addressPortController.text),
           )
               .then((value) {
             setState(() {
-              checkingStatus = OperationStatus.SUCCESS;
-              Printer.PrinterResponse? printerResponse;
+              checkingStatus = OperationStatus.success;
+              printer.PrinterResponse? printerResponse;
               if (value != null) {
-                printerResponse = Printer.PrinterResponse.fromJson(value);
+                printerResponse = printer.PrinterResponse.fromJson(value);
               }
-              statusMessage = "${printerResponse != null ? printerResponse.toMap() : value}";
+              statusMessage = '${printerResponse != null ? printerResponse.toMap() : value}';
             });
           }, onError: (error, stacktrace) {
             try {
               throw error;
             } on PlatformException catch (e) {
-              Printer.PrinterResponse printerResponse;
+              printer.PrinterResponse printerResponse;
               try {
-                printerResponse = Printer.PrinterResponse.fromJson(e.details);
+                printerResponse =
+                    printer.PrinterResponse.fromJson(e.details as Map<String, dynamic>);
                 statusMessage =
-                    "${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause}";
-              } catch (e) {
+                    '${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause}';
+              } on Exception catch (e) {
                 print(e);
                 statusMessage = e.toString();
               }
             } on MissingPluginException catch (e) {
-              statusMessage = "${e.message}";
-            } catch (e) {
+              statusMessage = '${e.message}';
+            } on Exception catch (e) {
               statusMessage = e.toString();
             }
             setState(() {
-              checkingStatus = OperationStatus.ERROR;
+              checkingStatus = OperationStatus.error;
             });
-          });
-          break;
+          }));
         case btnRebootPrinter:
           setState(() {
-            statusMessage = "Rebooting printer...";
-            rebootingStatus = OperationStatus.SENDING;
+            statusMessage = 'Rebooting printer...';
+            rebootingStatus = OperationStatus.sending;
           });
-          widget.zsdk
+          unawaited(widget.zsdk
               .rebootPrinterOverTCPIP(
             address: addressIpController.text,
             port: int.tryParse(addressPortController.text),
           )
               .then((value) {
             setState(() {
-              rebootingStatus = OperationStatus.SUCCESS;
-              Printer.PrinterResponse? printerResponse;
+              rebootingStatus = OperationStatus.success;
+              printer.PrinterResponse? printerResponse;
               if (value != null) {
-                printerResponse = Printer.PrinterResponse.fromJson(value);
+                printerResponse = printer.PrinterResponse.fromJson(value);
               }
-              statusMessage = "${printerResponse != null ? printerResponse.toMap() : value}";
+              statusMessage = '${printerResponse != null ? printerResponse.toMap() : value}';
             });
           }, onError: (error, stacktrace) {
             try {
               throw error;
             } on PlatformException catch (e) {
-              Printer.PrinterResponse printerResponse;
+              printer.PrinterResponse printerResponse;
               try {
-                printerResponse = Printer.PrinterResponse.fromJson(e.details);
+                printerResponse =
+                    printer.PrinterResponse.fromJson(e.details as Map<String, dynamic>);
                 statusMessage =
-                    "${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause}";
-              } catch (e) {
+                    '${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause}';
+              } on Exception catch (e) {
                 print(e);
                 statusMessage = e.toString();
               }
             } on MissingPluginException catch (e) {
-              statusMessage = "${e.message}";
-            } catch (e) {
+              statusMessage = '${e.message}';
+            } on Exception catch (e) {
               statusMessage = e.toString();
             }
             setState(() {
-              rebootingStatus = OperationStatus.ERROR;
+              rebootingStatus = OperationStatus.error;
             });
-          });
-          break;
+          }));
         case btnPrintConfigurationLabel:
           setState(() {
-            message = "Print job started...";
-            printStatus = OperationStatus.SENDING;
+            message = 'Print job started...';
+            printStatus = OperationStatus.sending;
           });
-          widget.zsdk
+          unawaited(widget.zsdk
               .printConfigurationLabelOverTCPIP(
             address: addressIpController.text,
             port: int.tryParse(addressPortController.text),
           )
               .then((value) {
             setState(() {
-              printStatus = OperationStatus.SUCCESS;
-              message = "$value";
+              printStatus = OperationStatus.success;
+              message = '$value';
             });
           }, onError: (error, stacktrace) {
             try {
               throw error;
             } on PlatformException catch (e) {
-              Printer.PrinterResponse printerResponse;
+              printer.PrinterResponse printerResponse;
               try {
-                printerResponse = Printer.PrinterResponse.fromJson(e.details);
+                printerResponse =
+                    printer.PrinterResponse.fromJson(e.details as Map<String, dynamic>);
                 message =
-                    "${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause}";
-              } catch (e) {
+                    '${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause}';
+              } on Exception catch (e) {
                 print(e);
                 message = e.toString();
               }
             } on MissingPluginException catch (e) {
-              message = "${e.message}";
-            } catch (e) {
+              message = '${e.message}';
+            } on Exception catch (e) {
               message = e.toString();
             }
             setState(() {
-              printStatus = OperationStatus.ERROR;
+              printStatus = OperationStatus.error;
             });
-          });
-          break;
+          }));
         case btnPrintPdfFileOverTCPIP:
-          if (!pathController.text.endsWith(".pdf")) {
-            throw Exception("Make sure you properly write the path or selected a proper pdf file");
+          if (!pathController.text.endsWith('.pdf')) {
+            throw Exception('Make sure you properly write the path or selected a proper pdf file');
           }
           setState(() {
-            message = "Print job started...";
-            printStatus = OperationStatus.SENDING;
+            message = 'Print job started...';
+            printStatus = OperationStatus.sending;
           });
-          widget.zsdk
+          unawaited(widget.zsdk
               .printPdfFileOverTCPIP(
                   filePath: pathController.text,
                   address: addressIpController.text,
                   port: int.tryParse(addressPortController.text),
-                  printerConf: Printer.PrinterConf(
+                  printerConf: printer.PrinterConf(
                     cmWidth: double.tryParse(widthController.text),
                     cmHeight: double.tryParse(heightController.text),
                     dpi: double.tryParse(dpiController.text),
@@ -1201,53 +1196,53 @@ class _MyAppState extends State<MyApp> {
                   ))
               .then((value) {
             setState(() {
-              printStatus = OperationStatus.SUCCESS;
-              message = "$value";
+              printStatus = OperationStatus.success;
+              message = '$value';
             });
           }, onError: (error, stacktrace) {
             try {
               throw error;
             } on PlatformException catch (e) {
-              Printer.PrinterResponse printerResponse;
+              printer.PrinterResponse printerResponse;
               try {
-                printerResponse = Printer.PrinterResponse.fromJson(e.details);
+                printerResponse =
+                    printer.PrinterResponse.fromJson(e.details as Map<String, dynamic>);
                 message =
-                    "${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause}";
-              } catch (e) {
+                    '${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause}';
+              } on Exception catch (e) {
                 print(e);
                 message = e.toString();
               }
             } on MissingPluginException catch (e) {
-              message = "${e.message}";
-            } catch (e) {
+              message = '${e.message}';
+            } on Exception catch (e) {
               message = e.toString();
             }
             setState(() {
-              printStatus = OperationStatus.ERROR;
+              printStatus = OperationStatus.error;
             });
-          });
-          break;
+          }));
         case btnPrintZplFileOverTCPIP:
-          if (filePath == null && !pathController.text.endsWith(".zpl")) {
-            throw Exception("Make sure you properly write the path or selected a proper zpl file");
+          if (filePath == null && !pathController.text.endsWith('.zpl')) {
+            throw Exception('Make sure you properly write the path or selected a proper zpl file');
           }
-          File zplFile = File(filePath!);
-          if (await zplFile.exists()) {
+          final zplFile = File(filePath!);
+          if (zplFile.existsSync()) {
             zplData = await zplFile.readAsString();
           }
           if (zplData == null || zplData!.isEmpty) {
-            throw Exception("Make sure you properly write the path or selected a proper zpl file");
+            throw Exception('Make sure you properly write the path or selected a proper zpl file');
           }
           setState(() {
-            message = "Print job started...";
-            printStatus = OperationStatus.SENDING;
+            message = 'Print job started...';
+            printStatus = OperationStatus.sending;
           });
-          widget.zsdk
+          unawaited(widget.zsdk
               .printZplDataOverTCPIP(
                   data: zplData!,
                   address: addressIpController.text,
                   port: int.tryParse(addressPortController.text),
-                  printerConf: Printer.PrinterConf(
+                  printerConf: printer.PrinterConf(
                     cmWidth: double.tryParse(widthController.text),
                     cmHeight: double.tryParse(heightController.text),
                     dpi: double.tryParse(dpiController.text),
@@ -1255,47 +1250,47 @@ class _MyAppState extends State<MyApp> {
                   ))
               .then((value) {
             setState(() {
-              printStatus = OperationStatus.SUCCESS;
-              message = "$value";
+              printStatus = OperationStatus.success;
+              message = '$value';
             });
           }, onError: (error, stacktrace) {
             try {
               throw error;
             } on PlatformException catch (e) {
-              Printer.PrinterResponse printerResponse;
+              printer.PrinterResponse printerResponse;
               try {
-                printerResponse = Printer.PrinterResponse.fromJson(e.details);
+                printerResponse =
+                    printer.PrinterResponse.fromJson(e.details as Map<String, dynamic>);
                 message =
-                    "${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause}";
-              } catch (e) {
+                    '${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause}';
+              } on Exception catch (e) {
                 print(e);
                 message = e.toString();
               }
             } on MissingPluginException catch (e) {
-              message = "${e.message}";
-            } catch (e) {
+              message = '${e.message}';
+            } on Exception catch (e) {
               message = e.toString();
             }
             setState(() {
-              printStatus = OperationStatus.ERROR;
+              printStatus = OperationStatus.error;
             });
-          });
-          break;
+          }));
         case btnPrintZplDataOverTCPIP:
           zplData = zplDataController.text;
           if (zplData == null || zplData!.isEmpty) {
             throw Exception("ZPL data can't be empty");
           }
           setState(() {
-            message = "Print job started...";
-            printStatus = OperationStatus.SENDING;
+            message = 'Print job started...';
+            printStatus = OperationStatus.sending;
           });
-          widget.zsdk
+          unawaited(widget.zsdk
               .printZplDataOverTCPIP(
                   data: zplData!,
                   address: addressIpController.text,
                   port: int.tryParse(addressPortController.text),
-                  printerConf: Printer.PrinterConf(
+                  printerConf: printer.PrinterConf(
                     cmWidth: double.tryParse(widthController.text),
                     cmHeight: double.tryParse(heightController.text),
                     dpi: double.tryParse(dpiController.text),
@@ -1303,34 +1298,34 @@ class _MyAppState extends State<MyApp> {
                   ))
               .then((value) {
             setState(() {
-              printStatus = OperationStatus.SUCCESS;
-              message = "$value";
+              printStatus = OperationStatus.success;
+              message = '$value';
             });
           }, onError: (error, stacktrace) {
             try {
               throw error;
             } on PlatformException catch (e) {
-              Printer.PrinterResponse printerResponse;
+              printer.PrinterResponse printerResponse;
               try {
-                printerResponse = Printer.PrinterResponse.fromJson(e.details);
+                printerResponse =
+                    printer.PrinterResponse.fromJson(e.details as Map<String, dynamic>);
                 message =
-                    "${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause}";
-              } catch (e) {
+                    '${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause}';
+              } on Exception catch (e) {
                 print(e);
                 message = e.toString();
               }
             } on MissingPluginException catch (e) {
-              message = "${e.message}";
-            } catch (e) {
+              message = '${e.message}';
+            } on Exception catch (e) {
               message = e.toString();
             }
             setState(() {
-              printStatus = OperationStatus.ERROR;
+              printStatus = OperationStatus.error;
             });
-          });
-          break;
+          }));
       }
-    } catch (e) {
+    } on Exception catch (e) {
       print(e);
       showSnackBar(e.toString());
     }
