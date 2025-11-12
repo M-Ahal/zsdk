@@ -9,6 +9,7 @@ import 'src/printer_conf.dart';
 import 'src/printer_response.dart';
 import 'src/printer_settings.dart';
 import 'src/status_info.dart';
+import 'src/typedefs.dart';
 
 export 'package:zsdk/src/enumerators/cause.dart';
 export 'package:zsdk/src/enumerators/error_code.dart';
@@ -87,55 +88,65 @@ final class ZSDK {
     ).toMap(),
   );
 
-  Future doManualCalibrationOverTCPIP({required String address, int? port, Duration? timeout}) =>
-      _channel
-          .invokeMethod(_kDoManualCalibrationOverTcpIp, {_address: address, _port: port})
-          .timeout(
-            timeout ??= const Duration(seconds: _kDefaultConnectionTimeout),
-            onTimeout: () => _onTimeout(timeout: timeout),
-          );
-
-  Future printConfigurationLabelOverTCPIP({
+  Future<Json?> doManualCalibrationOverTCPIP({
     required String address,
     int? port,
     Duration? timeout,
   }) => _channel
-      .invokeMethod(_kPrintConfigurationLabelOverTcpIp, {_address: address, _port: port})
+      .invokeMethod<Json>(_kDoManualCalibrationOverTcpIp, {_address: address, _port: port})
       .timeout(
         timeout ??= const Duration(seconds: _kDefaultConnectionTimeout),
         onTimeout: () => _onTimeout(timeout: timeout),
       );
 
-  Future rebootPrinterOverTCPIP({required String address, int? port, Duration? timeout}) => _channel
-      .invokeMethod(_kRebootPrinterOverTcpIp, {_address: address, _port: port})
+  Future<Json?> printConfigurationLabelOverTCPIP({
+    required String address,
+    int? port,
+    Duration? timeout,
+  }) => _channel
+      .invokeMethod<Json>(_kPrintConfigurationLabelOverTcpIp, {_address: address, _port: port})
       .timeout(
         timeout ??= const Duration(seconds: _kDefaultConnectionTimeout),
         onTimeout: () => _onTimeout(timeout: timeout),
       );
 
-  Future checkPrinterStatusOverTCPIP({required String address, int? port, Duration? timeout}) =>
+  Future<Json?> rebootPrinterOverTCPIP({required String address, int? port, Duration? timeout}) =>
       _channel
-          .invokeMethod(_kCheckPrinterStatusOverTcpIp, {_address: address, _port: port})
+          .invokeMethod<Json>(_kRebootPrinterOverTcpIp, {_address: address, _port: port})
           .timeout(
             timeout ??= const Duration(seconds: _kDefaultConnectionTimeout),
             onTimeout: () => _onTimeout(timeout: timeout),
           );
 
-  Future getPrinterSettingsOverTCPIP({required String address, int? port, Duration? timeout}) =>
-      _channel
-          .invokeMethod(_kGetPrinterSettingsOverTcpIp, {_address: address, _port: port})
-          .timeout(
-            timeout ??= const Duration(seconds: _kDefaultConnectionTimeout),
-            onTimeout: () => _onTimeout(timeout: timeout),
-          );
+  Future<Json?> checkPrinterStatusOverTCPIP({
+    required String address,
+    int? port,
+    Duration? timeout,
+  }) => _channel
+      .invokeMethod<Json>(_kCheckPrinterStatusOverTcpIp, {_address: address, _port: port})
+      .timeout(
+        timeout ??= const Duration(seconds: _kDefaultConnectionTimeout),
+        onTimeout: () => _onTimeout(timeout: timeout),
+      );
 
-  Future setPrinterSettingsOverTCPIP({
+  Future<Json?> getPrinterSettingsOverTCPIP({
+    required String address,
+    int? port,
+    Duration? timeout,
+  }) => _channel
+      .invokeMethod<Json>(_kGetPrinterSettingsOverTcpIp, {_address: address, _port: port})
+      .timeout(
+        timeout ??= const Duration(seconds: _kDefaultConnectionTimeout),
+        onTimeout: () => _onTimeout(timeout: timeout),
+      );
+
+  Future<Json?> setPrinterSettingsOverTCPIP({
     required PrinterSettings settings,
     required String address,
     int? port,
     Duration? timeout,
   }) => _channel
-      .invokeMethod(
+      .invokeMethod<Json>(
         _kSetPrinterSettingsOverTcpIp,
         {_address: address, _port: port}..addAll(settings.toJson()),
       )
@@ -144,15 +155,18 @@ final class ZSDK {
         onTimeout: () => _onTimeout(timeout: timeout),
       );
 
-  Future resetPrinterSettingsOverTCPIP({required String address, int? port, Duration? timeout}) =>
-      setPrinterSettingsOverTCPIP(
-        settings: PrinterSettings.defaultSettings(),
-        address: address,
-        port: port,
-        timeout: timeout,
-      );
+  Future<Json?> resetPrinterSettingsOverTCPIP({
+    required String address,
+    int? port,
+    Duration? timeout,
+  }) => setPrinterSettingsOverTCPIP(
+    settings: PrinterSettings.defaultSettings(),
+    address: address,
+    port: port,
+    timeout: timeout,
+  );
 
-  Future printPdfFileOverTCPIP({
+  Future<Json?> printPdfFileOverTCPIP({
     required String filePath,
     required String address,
     int? port,
@@ -167,7 +181,7 @@ final class ZSDK {
     timeout: timeout,
   );
 
-  Future printZplFileOverTCPIP({
+  Future<Json?> printZplFileOverTCPIP({
     required String filePath,
     required String address,
     int? port,
@@ -182,7 +196,7 @@ final class ZSDK {
     timeout: timeout,
   );
 
-  Future _printFileOverTCPIP({
+  Future<Json?> _printFileOverTCPIP({
     required String methodName,
     required String filePath,
     required String address,
@@ -190,7 +204,7 @@ final class ZSDK {
     PrinterConf? printerConf,
     Duration? timeout,
   }) => _channel
-      .invokeMethod(methodName, {
+      .invokeMethod<Json>(methodName, {
         _filePath: filePath,
         _address: address,
         _port: port,
@@ -204,7 +218,7 @@ final class ZSDK {
         onTimeout: () => _onTimeout(timeout: timeout),
       );
 
-  Future printPdfDataOverTCPIP({
+  Future<Json?> printPdfDataOverTCPIP({
     required ByteData data,
     required String address,
     int? port,
@@ -219,7 +233,7 @@ final class ZSDK {
     timeout: timeout,
   );
 
-  Future printZplDataOverTCPIP({
+  Future<Json?> printZplDataOverTCPIP({
     required String data,
     required String address,
     int? port,
@@ -234,7 +248,7 @@ final class ZSDK {
     timeout: timeout,
   );
 
-  Future _printDataOverTCPIP({
+  Future<Json?> _printDataOverTCPIP({
     required String methodName,
     required data,
     required String address,
@@ -242,7 +256,7 @@ final class ZSDK {
     PrinterConf? printerConf,
     Duration? timeout,
   }) => _channel
-      .invokeMethod(methodName, {
+      .invokeMethod<Json>(methodName, {
         _data: data,
         _address: address,
         _port: port,
