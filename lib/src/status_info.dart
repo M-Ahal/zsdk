@@ -2,21 +2,16 @@ import 'enumerators/cause.dart';
 import 'enumerators/status.dart';
 
 /// Created by luis901101 on 2020-01-07.
-class StatusInfo {
+final class StatusInfo {
   final Status status;
   final Cause cause;
 
-  StatusInfo(Status? status, Cause? cause)
-      : status = status ?? Status.unknown,
-        cause = cause ?? Cause.unknown;
+  const StatusInfo(Status? status, Cause? cause)
+    : status = status ?? Status.unknown,
+      cause = cause ?? Cause.unknown;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{
-        'status': status.name,
-        'cause': cause.name,
-      };
+  Map<String, dynamic> toMap() => <String, dynamic>{'status': status.name, 'cause': cause.name};
 
-  factory StatusInfo.fromMap(Map<dynamic, dynamic> map) => StatusInfo(
-        Status.values.byName(map['status']),
-        Cause.values.byName(map['cause']),
-      );
+  factory StatusInfo.fromMap(Map<dynamic, dynamic> map) =>
+      StatusInfo(Status.values.byName(map['status']), Cause.values.byName(map['cause']));
 }
