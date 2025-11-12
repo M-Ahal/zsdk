@@ -1,8 +1,2 @@
 /// Created by luis901101 on 2020-02-11.
-enum HeadCloseAction {
-  feed,
-  calibrate,
-  length,
-  noMotion,
-  shortCal,
-}
+enum HeadCloseAction { feed, calibrate, length, noMotion, shortCal }
