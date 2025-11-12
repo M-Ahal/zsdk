@@ -5,27 +5,27 @@ import 'printer_settings.dart';
 import 'status_info.dart';
 
 /// Created by luis901101 on 2020-01-07.
-class PrinterResponse {
-  ErrorCode errorCode;
-  StatusInfo statusInfo;
-  PrinterSettings? settings;
-  String? message;
+final class PrinterResponse {
+  final ErrorCode errorCode;
+  final StatusInfo statusInfo;
+  final PrinterSettings? settings;
+  final String? message;
 
-  PrinterResponse({ErrorCode? errorCode, StatusInfo? statusInfo, this.settings, this.message})
-      : errorCode = errorCode ?? ErrorCode.unknown,
-        statusInfo = statusInfo ?? StatusInfo(Status.unknown, Cause.unknown);
+  const PrinterResponse({ErrorCode? errorCode, StatusInfo? statusInfo, this.settings, this.message})
+    : errorCode = errorCode ?? ErrorCode.unknown,
+      statusInfo = statusInfo ?? const StatusInfo(Status.unknown, Cause.unknown);
 
   Map<String, dynamic> toMap() => <String, dynamic>{
-        'errorCode': errorCode.name,
-        'statusInfo': statusInfo.toMap(),
-        'settings': settings?.toMap(),
-        'message': message,
-      };
+    'errorCode': errorCode.name,
+    'statusInfo': statusInfo.toMap(),
+    'settings': settings?.toMap(),
+    'message': message,
+  };
 
   factory PrinterResponse.fromMap(Map<dynamic, dynamic> map) => PrinterResponse(
-        errorCode: ErrorCode.values.byName(map['errorCode']),
-        statusInfo: map['statusInfo'] == null ? null : StatusInfo.fromMap(map['statusInfo']),
-        settings: map['settings'] == null ? null : PrinterSettings.fromMap(map['settings']),
-        message: map['message'],
-      );
+    errorCode: ErrorCode.values.byName(map['errorCode']),
+    statusInfo: map['statusInfo'] == null ? null : StatusInfo.fromMap(map['statusInfo']),
+    settings: map['settings'] == null ? null : PrinterSettings.fromMap(map['settings']),
+    message: map['message'],
+  );
 }
