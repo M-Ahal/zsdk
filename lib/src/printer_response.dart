@@ -1,8 +1,8 @@
-import 'package:zsdk/src/enumerators/cause.dart';
-import 'package:zsdk/src/enumerators/error_code.dart';
-import 'package:zsdk/src/enumerators/status.dart';
-import 'package:zsdk/src/printer_settings.dart';
-import 'package:zsdk/src/status_info.dart';
+import 'enumerators/cause.dart';
+import 'enumerators/error_code.dart';
+import 'enumerators/status.dart';
+import 'printer_settings.dart';
+import 'status_info.dart';
 
 /// Created by luis901101 on 2020-01-07.
 class PrinterResponse {

@@ -9,7 +9,7 @@ extension StatusUtils on Status {
   String get name => toString().split('.').last;
 
   static Status? valueOf(String name) {
-    for (Status value in Status.values) {
+    for (final value in Status.values) {
       if (value.name == name) return value;
     }
     return Status.unknown;

@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:zsdk/src/enumerators/cause.dart';
-import 'package:zsdk/src/enumerators/error_code.dart';
-import 'package:zsdk/src/enumerators/orientation.dart';
-import 'package:zsdk/src/enumerators/status.dart';
-import 'package:zsdk/src/printer_conf.dart';
-import 'package:zsdk/src/printer_response.dart';
-import 'package:zsdk/src/printer_settings.dart';
-import 'package:zsdk/src/status_info.dart';
+import 'src/enumerators/cause.dart';
+import 'src/enumerators/error_code.dart';
+import 'src/enumerators/orientation.dart';
+import 'src/enumerators/status.dart';
+import 'src/printer_conf.dart';
+import 'src/printer_response.dart';
+import 'src/printer_settings.dart';
+import 'src/status_info.dart';
 
 export 'package:zsdk/src/enumerators/cause.dart';
 export 'package:zsdk/src/enumerators/error_code.dart';
@@ -28,35 +28,35 @@ export 'package:zsdk/src/printer_settings.dart';
 export 'package:zsdk/src/status_info.dart';
 
 class ZSDK {
-  static const int kDefaultZplTcpPort = 9100;
+  static const kDefaultZplTcpPort = 9100;
 
   ///In seconds
-  static const int _kDefaultConnectionTimeout = 10;
+  static const _kDefaultConnectionTimeout = 10;
 
   /// Channel
-  static const String _kMethodChannelName = "zsdk";
+  static const _kMethodChannelName = 'zsdk';
 
   /// Methods
-  static const String _kPrintPdfFileOverTcpIp = "printPdfFileOverTCPIP";
-  static const String _kPrintPdfDataOverTcpIp = "printPdfDataOverTCPIP";
-  static const String _kPrintZplFileOverTcpIp = "printZplFileOverTCPIP";
-  static const String _kPrintZplDataOverTcpIp = "printZplDataOverTCPIP";
-  static const String _kCheckPrinterStatusOverTcpIp = "checkPrinterStatusOverTCPIP";
-  static const String _kGetPrinterSettingsOverTcpIp = "getPrinterSettingsOverTCPIP";
-  static const String _kSetPrinterSettingsOverTcpIp = "setPrinterSettingsOverTCPIP";
-  static const String _kDoManualCalibrationOverTcpIp = "doManualCalibrationOverTCPIP";
-  static const String _kPrintConfigurationLabelOverTcpIp = "printConfigurationLabelOverTCPIP";
-  static const String _kRebootPrinterOverTcpIp = "rebootPrinterOverTCPIP";
+  static const _kPrintPdfFileOverTcpIp = 'printPdfFileOverTCPIP';
+  static const _kPrintPdfDataOverTcpIp = 'printPdfDataOverTCPIP';
+  static const _kPrintZplFileOverTcpIp = 'printZplFileOverTCPIP';
+  static const _kPrintZplDataOverTcpIp = 'printZplDataOverTCPIP';
+  static const _kCheckPrinterStatusOverTcpIp = 'checkPrinterStatusOverTCPIP';
+  static const _kGetPrinterSettingsOverTcpIp = 'getPrinterSettingsOverTCPIP';
+  static const _kSetPrinterSettingsOverTcpIp = 'setPrinterSettingsOverTCPIP';
+  static const _kDoManualCalibrationOverTcpIp = 'doManualCalibrationOverTCPIP';
+  static const _kPrintConfigurationLabelOverTcpIp = 'printConfigurationLabelOverTCPIP';
+  static const _kRebootPrinterOverTcpIp = 'rebootPrinterOverTCPIP';
 
   /// Properties
-  static const String _filePath = "filePath";
-  static const String _data = "data";
-  static const String _address = "address";
-  static const String _port = "port";
-  static const String _cmWidth = "cmWidth";
-  static const String _cmHeight = "cmHeight";
-  static const String _orientation = "orientation";
-  static const String _dpi = "dpi";
+  static const _filePath = 'filePath';
+  static const _data = 'data';
+  static const _address = 'address';
+  static const _port = 'port';
+  static const _cmWidth = 'cmWidth';
+  static const _cmHeight = 'cmHeight';
+  static const _orientation = 'orientation';
+  static const _dpi = 'dpi';
 
   late MethodChannel _channel;
 
@@ -224,7 +224,7 @@ class ZSDK {
 
   Future _printDataOverTCPIP(
           {required method,
-          required dynamic data,
+          required data,
           required String address,
           int? port,
           PrinterConf? printerConf,

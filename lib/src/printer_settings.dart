@@ -1,38 +1,37 @@
-import 'package:zsdk/src/enumerators/head_close_action.dart';
-import 'package:zsdk/src/enumerators/media_type.dart';
-import 'package:zsdk/src/enumerators/power_up_action.dart';
-import 'package:zsdk/src/enumerators/print_method.dart';
-import 'package:zsdk/src/enumerators/print_mode.dart';
-import 'package:zsdk/src/enumerators/reprint_mode.dart';
-import 'package:zsdk/src/enumerators/zpl_mode.dart';
-
+import 'enumerators/head_close_action.dart';
+import 'enumerators/media_type.dart';
+import 'enumerators/power_up_action.dart';
+import 'enumerators/print_method.dart';
+import 'enumerators/print_mode.dart';
+import 'enumerators/reprint_mode.dart';
 import 'enumerators/virtual_device.dart';
+import 'enumerators/zpl_mode.dart';
 
 /// Created by luis901101 on 2020-02-10.
 class PrinterSettings {
   /// Fields name
-  static const String _kFieldDarkness = "darkness";
-  static const String _kFieldPrintSpeed = "printSpeed";
-  static const String _kFieldTearOff = "tearOff";
-  static const String _kFieldMediaType = "mediaType";
-  static const String _kFieldPrintMethod = "printMethod";
-  static const String _kFieldPrintWidth = "printWidth";
-  static const String _kFieldLabelLength = "labelLength";
-  static const String _kFieldLabelLengthMax = "labelLengthMax";
-  static const String _kFieldZplMode = "zplMode";
-  static const String _kFieldPowerUpAction = "powerUpAction";
-  static const String _kFieldHeadCloseAction = "headCloseAction";
-  static const String _kFieldLabelTop = "labelTop";
-  static const String _kFieldLeftPosition = "leftPosition";
-  static const String _kFieldPrintMode = "printMode";
-  static const String _kFieldReprintMode = "reprintMode";
-  static const String _kFieldVirtualDevice = "virtualDevice";
-  static const String _kFieldPrinterModelName = "printerModelName";
-  static const String _kFieldDeviceFriendlyName = "deviceFriendlyName";
-  static const String _kFieldFirmware = "firmware";
-  static const String _kFieldLinkOsVersion = "linkOSVersion";
-  static const String _kFieldPrinterDpi = "printerDpi";
-  static const String _kFieldDevicePrintHeadResolution = "devicePrintHeadResolution";
+  static const _kFieldDarkness = 'darkness';
+  static const _kFieldPrintSpeed = 'printSpeed';
+  static const _kFieldTearOff = 'tearOff';
+  static const _kFieldMediaType = 'mediaType';
+  static const _kFieldPrintMethod = 'printMethod';
+  static const _kFieldPrintWidth = 'printWidth';
+  static const _kFieldLabelLength = 'labelLength';
+  static const _kFieldLabelLengthMax = 'labelLengthMax';
+  static const _kFieldZplMode = 'zplMode';
+  static const _kFieldPowerUpAction = 'powerUpAction';
+  static const _kFieldHeadCloseAction = 'headCloseAction';
+  static const _kFieldLabelTop = 'labelTop';
+  static const _kFieldLeftPosition = 'leftPosition';
+  static const _kFieldPrintMode = 'printMode';
+  static const _kFieldReprintMode = 'reprintMode';
+  static const _kFieldVirtualDevice = 'virtualDevice';
+  static const _kFieldPrinterModelName = 'printerModelName';
+  static const _kFieldDeviceFriendlyName = 'deviceFriendlyName';
+  static const _kFieldFirmware = 'firmware';
+  static const _kFieldLinkOsVersion = 'linkOSVersion';
+  static const _kFieldPrinterDpi = 'printerDpi';
+  static const _kFieldDevicePrintHeadResolution = 'devicePrintHeadResolution';
 
   // Writable settings
   /// To set the darkness and relative darkness

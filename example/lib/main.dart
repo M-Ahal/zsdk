@@ -444,13 +444,13 @@ class _MyAppState extends State<MyApp> {
                       ),
                       DropdownButtonFormField<Printer.MediaType>(
                         items: generateDropdownItems(Printer.MediaType.values),
-                        value: selectedMediaType,
+                        initialValue: selectedMediaType,
                         onChanged: (value) => setState(() => selectedMediaType = value),
                         decoration: const InputDecoration(labelText: "Media type"),
                       ),
                       DropdownButtonFormField<Printer.PrintMethod>(
                         items: generateDropdownItems(Printer.PrintMethod.values),
-                        value: selectedPrintMethod,
+                        initialValue: selectedPrintMethod,
                         onChanged: (value) => setState(() => selectedPrintMethod = value),
                         decoration: const InputDecoration(labelText: "Print method"),
                       ),
@@ -477,19 +477,19 @@ class _MyAppState extends State<MyApp> {
                       ),
                       DropdownButtonFormField<Printer.ZPLMode>(
                         items: generateDropdownItems(Printer.ZPLMode.values),
-                        value: selectedZPLMode,
+                        initialValue: selectedZPLMode,
                         onChanged: (value) => setState(() => selectedZPLMode = value),
                         decoration: const InputDecoration(labelText: "ZPL mode"),
                       ),
                       DropdownButtonFormField<Printer.PowerUpAction>(
                         items: generateDropdownItems(Printer.PowerUpAction.values),
-                        value: selectedPowerUpAction,
+                        initialValue: selectedPowerUpAction,
                         onChanged: (value) => setState(() => selectedPowerUpAction = value),
                         decoration: const InputDecoration(labelText: "Power up action"),
                       ),
                       DropdownButtonFormField<Printer.HeadCloseAction>(
                         items: generateDropdownItems(Printer.HeadCloseAction.values),
-                        value: selectedHeadCloseAction,
+                        initialValue: selectedHeadCloseAction,
                         onChanged: (value) => setState(() => selectedHeadCloseAction = value),
                         decoration: const InputDecoration(labelText: "Head close action"),
                       ),
@@ -509,19 +509,19 @@ class _MyAppState extends State<MyApp> {
                       ),
                       DropdownButtonFormField<Printer.PrintMode>(
                         items: generateDropdownItems(Printer.PrintMode.values),
-                        value: selectedPrintMode,
+                        initialValue: selectedPrintMode,
                         onChanged: (value) => setState(() => selectedPrintMode = value),
                         decoration: const InputDecoration(labelText: "Print mode"),
                       ),
                       DropdownButtonFormField<Printer.ReprintMode>(
                         items: generateDropdownItems(Printer.ReprintMode.values),
-                        value: selectedReprintMode,
+                        initialValue: selectedReprintMode,
                         onChanged: (value) => setState(() => selectedReprintMode = value),
                         decoration: const InputDecoration(labelText: "Reprint mode"),
                       ),
                       DropdownButtonFormField<Printer.VirtualDevice>(
                         items: generateDropdownItems(Printer.VirtualDevice.values),
-                        value: selectedVirtualDevice,
+                        initialValue: selectedVirtualDevice,
                         onChanged: (value) => setState(() => selectedVirtualDevice = value),
                         decoration: const InputDecoration(labelText: "Virtual device"),
                       ),
@@ -704,7 +704,7 @@ class _MyAppState extends State<MyApp> {
                             child: Text("Landscape"),
                           )
                         ],
-                        value: printerOrientation,
+                        initialValue: printerOrientation,
                         onChanged: (value) => setState(
                             () => printerOrientation = value ?? Printer.Orientation.landscape),
                         decoration: const InputDecoration(labelText: "Print orientation"),

@@ -1,5 +1,5 @@
-import 'package:zsdk/src/enumerators/cause.dart';
-import 'package:zsdk/src/enumerators/status.dart';
+import 'enumerators/cause.dart';
+import 'enumerators/status.dart';
 
 /// Created by luis901101 on 2020-01-07.
 class StatusInfo {
