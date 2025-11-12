@@ -10,14 +10,3 @@ enum Cause {
   noConnection,
   unknown,
 }
-
-extension CauseUtils on Cause {
-  String get name => toString().split('.').last;
-
-  static Cause? valueOf(String name) {
-    for (final value in Cause.values) {
-      if (value.name == name) return value;
-    }
-    return Cause.unknown;
-  }
-}
