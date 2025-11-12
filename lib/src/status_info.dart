@@ -1,5 +1,6 @@
 import 'enumerators/cause.dart';
 import 'enumerators/status.dart';
+import 'typedefs.dart';
 
 /// Created by luis901101 on 2020-01-07.
 final class StatusInfo {
@@ -10,8 +11,10 @@ final class StatusInfo {
     : status = status ?? Status.unknown,
       cause = cause ?? Cause.unknown;
 
-  Map<String, dynamic> toMap() => <String, dynamic>{'status': status.name, 'cause': cause.name};
+  Json toMap() => {'status': status.name, 'cause': cause.name};
 
-  factory StatusInfo.fromMap(Map<dynamic, dynamic> map) =>
-      StatusInfo(Status.values.byName(map['status']), Cause.values.byName(map['cause']));
+  factory StatusInfo.fromMap(Json map) => StatusInfo(
+    map['status'] == null ? null : Status.values.byName(map['status'] as String),
+    map['cause'] == null ? null : Cause.values.byName(map['cause'] as String),
+  );
 }
