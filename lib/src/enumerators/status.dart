@@ -4,14 +4,3 @@ enum Status {
   readyToPrint,
   unknown,
 }
-
-extension StatusUtils on Status {
-  String get name => toString().split('.').last;
-
-  static Status? valueOf(String name) {
-    for (final value in Status.values) {
-      if (value.name == name) return value;
-    }
-    return Status.unknown;
-  }
-}

@@ -9,16 +9,9 @@ enum VirtualDevice {
   aplMi('apl-mi'),
   aplO('apl-o'),
   aplT('apl-t'),
-  pdf('pdf'),
-  ;
+  pdf('pdf');
 
   final String name;
-  const VirtualDevice(this.name);
 
-  static VirtualDevice? valueOf(String? name) {
-    for (final item in values) {
-      if (item.name == name) return item;
-    }
-    return null;
-  }
+  const VirtualDevice(this.name);
 }

@@ -23,7 +23,7 @@ class PrinterResponse {
       };
 
   factory PrinterResponse.fromMap(Map<dynamic, dynamic> map) => PrinterResponse(
-        errorCode: ErrorCodeUtils.valueOf(map['errorCode']),
+        errorCode: ErrorCode.values.byName(map['errorCode']),
         statusInfo: map['statusInfo'] == null ? null : StatusInfo.fromMap(map['statusInfo']),
         settings: map['settings'] == null ? null : PrinterSettings.fromMap(map['settings']),
         message: map['message'],

@@ -16,7 +16,7 @@ class StatusInfo {
       };
 
   factory StatusInfo.fromMap(Map<dynamic, dynamic> map) => StatusInfo(
-        StatusUtils.valueOf(map['status']),
-        CauseUtils.valueOf(map['cause']),
+        Status.values.byName(map['status']),
+        Cause.values.byName(map['cause']),
       );
 }

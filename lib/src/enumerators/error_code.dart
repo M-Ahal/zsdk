@@ -6,14 +6,3 @@ enum ErrorCode {
   printerRebooted,
   unknown,
 }
-
-extension ErrorCodeUtils on ErrorCode {
-  String get name => toString().split('.').last;
-
-  static ErrorCode? valueOf(String name) {
-    for (final value in ErrorCode.values) {
-      if (value.name == name) return value;
-    }
-    return ErrorCode.unknown;
-  }
-}

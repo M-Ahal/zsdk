@@ -3,19 +3,3 @@ enum ReprintMode {
   on,
   off,
 }
-
-final _mapValueOfName = {
-  'on': ReprintMode.on,
-  'off': ReprintMode.off,
-};
-
-final _mapNameOfValue = {
-  ReprintMode.on: 'on',
-  ReprintMode.off: 'off',
-};
-
-extension ReprintModeUtils on ReprintMode {
-  String get name => _mapNameOfValue[this]!;
-
-  static ReprintMode? valueOf(String? name) => _mapValueOfName[name!];
-}
