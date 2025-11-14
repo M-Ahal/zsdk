@@ -25,9 +25,9 @@ Map<String, dynamic> _$PrinterResponseToJson(PrinterResponse instance) => <Strin
 };
 
 const _$ErrorCodeEnumMap = {
-  ErrorCode.success: 'success',
-  ErrorCode.exception: 'exception',
-  ErrorCode.printerError: 'printerError',
-  ErrorCode.printerRebooted: 'printerRebooted',
-  ErrorCode.unknown: 'unknown',
+  ErrorCode.success: 'SUCCESS',
+  ErrorCode.exception: 'EXCEPTION',
+  ErrorCode.printerError: 'PRINTER_ERROR',
+  ErrorCode.printerRebooted: 'PRINTER_REBOOTED',
+  ErrorCode.unknown: 'UNKNOWN',
 };
