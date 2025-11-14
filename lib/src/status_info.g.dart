@@ -17,19 +17,19 @@ Map<String, dynamic> _$StatusInfoToJson(StatusInfo instance) => <String, dynamic
 };
 
 const _$StatusEnumMap = {
-  Status.paused: 'paused',
-  Status.readyToPrint: 'readyToPrint',
-  Status.unknown: 'unknown',
+  Status.paused: 'PAUSED',
+  Status.readyToPrint: 'READY_TO_PRINT',
+  Status.unknown: 'UNKNOWN',
 };
 
 const _$CauseEnumMap = {
-  Cause.partialFormatInProgress: 'partialFormatInProgress',
-  Cause.headCold: 'headCold',
-  Cause.headOpen: 'headOpen',
-  Cause.headTooHot: 'headTooHot',
-  Cause.paperOut: 'paperOut',
-  Cause.ribbonOut: 'ribbonOut',
-  Cause.receiveBufferFull: 'receiveBufferFull',
-  Cause.noConnection: 'noConnection',
-  Cause.unknown: 'unknown',
+  Cause.partialFormatInProgress: 'PARTIAL_FORMAT_IN_PROGRESS',
+  Cause.headCold: 'HEAD_COLD',
+  Cause.headOpen: 'HEAD_OPEN',
+  Cause.headTooHot: 'HEAD_TOO_HOT',
+  Cause.paperOut: 'PAPER_OUT',
+  Cause.ribbonOut: 'RIBBON_OUT',
+  Cause.receiveBufferFull: 'RECEIVE_BUFFER_FULL',
+  Cause.noConnection: 'NO_CONNECTION',
+  Cause.unknown: 'UNKNOWN',
 };

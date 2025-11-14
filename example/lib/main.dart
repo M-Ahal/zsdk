@@ -1078,8 +1078,7 @@ class _MyAppState extends State<MyApp> {
             } on PlatformException catch (e) {
               printer.PrinterResponse printerResponse;
               try {
-                printerResponse =
-                    printer.PrinterResponse.fromJson(e.details as Map<String, dynamic>);
+                printerResponse = printer.PrinterResponse.fromJson(_deepConvertMap(e.details));
                 statusMessage =
                     '${printerResponse.message} ${printerResponse.errorCode} ${printerResponse.statusInfo.status} ${printerResponse.statusInfo.cause}';
               } on Exception catch (e) {
@@ -1333,5 +1332,18 @@ class _MyAppState extends State<MyApp> {
 
   void showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+  }
+
+  static dynamic _deepConvertMap(dynamic value) {
+    if (value is Map) {
+      // Convert Map<Object?, Object?> to Map<String, dynamic>
+      return value.map<String, dynamic>(
+        (key, value) => MapEntry(key.toString(), _deepConvertMap(value)),
+      );
+    } else if (value is List) {
+      return value.map(_deepConvertMap).toList();
+    }
+
+    return value;
   }
 }
