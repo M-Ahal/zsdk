@@ -20,6 +20,8 @@ dependencies:
 
 dev_dependencies:
   build_runner: ^2.10.2
+  pigeon: ^26.1.0
+  pigeon_generator: ^3.1.0
   json_serializable: ^6.11.1
 
 # For information on the generic Dart part of this file, see the
