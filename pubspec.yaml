@@ -32,7 +32,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.plugin.flutter.zsdk
+        package: org.didata.zsdk
         pluginClass: ZsdkPlugin
       ios:
         pluginClass: ZsdkPlugin
