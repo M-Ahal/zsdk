@@ -1,3 +1,6 @@
+#
+# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
+#
 Pod::Spec.new do |s|
   s.name             = 'zsdk'
   s.version          = '0.0.2'
@@ -16,12 +19,12 @@ Zebra Link OS SDK Flutter Pod
   s.ios.deployment_target = '9.0'
   s.static_framework = true
 
-  s.ios.vendored_frameworks = 'Libs/zsdk/ZSDK_API.xcframework'
+  s.ios.vendored_libraries = 'Libs/zsdk/libzsdk.a'
 
   s.pod_target_xcconfig = {
     'DEFINES_MODULE' => 'YES',
-    'VALID_ARCHS[sdk=iphonesimulator*]' => 'x86_64 arm64',
-    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => '',
+    'VALID_ARCHS[sdk=iphonesimulator*]' => 'x86_64',
+    'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64',
     'ENABLE_BITCODE' => 'NO'
   }
 end
